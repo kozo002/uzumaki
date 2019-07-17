@@ -1,0 +1,19 @@
+{
+  "name": "uzumaki",
+  "version": "1.0.0",
+  "description": "Agile Project Management Tool",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kozo002/uzumaki.git"
+  },
+  "author": "kozo yamagata",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kozo002/uzumaki/issues"
+  },
+  "homepage": "https://github.com/kozo002/uzumaki#readme"
+}

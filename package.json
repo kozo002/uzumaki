@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/kozo002/uzumaki/issues"
   },
-  "homepage": "https://github.com/kozo002/uzumaki#readme"
+  "homepage": "https://github.com/kozo002/uzumaki#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }

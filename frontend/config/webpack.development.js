@@ -3,7 +3,7 @@ const HTMLWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   mode: 'development',
-  entry: './frontend/src/app.ts',
+  entry: './frontend/src/app.tsx',
   output: {
     filename: 'app.js',
     path: path.resolve(__dirname, '../dist'),
@@ -23,7 +23,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.(ts|tsx)$/,
         loader: 'ts-loader',
         exclude: /node_modules/,
         options: {
@@ -33,6 +33,6 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.tsx', '.js']
   },
 }

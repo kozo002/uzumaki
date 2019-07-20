@@ -2,6 +2,8 @@ const path = require('path')
 const express = require('express')
 const app = express()
 
+const { client } = require('./db')
+
 const indexHTMLFile = path.resolve(__dirname, '../frontend/dist/index.html')
 
 // route for static files

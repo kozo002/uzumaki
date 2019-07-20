@@ -1,0 +1,13 @@
+{
+  "development": {
+    "username": "uzumaki",
+    "password": "password",
+    "database": "postgres",
+    "host": "db",
+    "port": 5432,
+    "dialect": "postgresql"
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL"
+  }
+}

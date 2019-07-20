@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:11
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: uzumaki
+      POSTGRES_PASSWORD: password
+    volumes:
+      - $PWD/docker-data/db:/var/lib/postgresql/data
+  app:
+    build:
+      context: .
+    ports:
+      - 8101:8101
+    depends_on:
+      - db
+    command: ./bin/wait_for_it.sh db:5432 -- npm run backend:start

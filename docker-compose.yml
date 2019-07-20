@@ -9,7 +9,6 @@ services:
       POSTGRES_USER: uzumaki
       POSTGRES_PASSWORD: password
     volumes:
-      - db_data
       - $PWD/docker-data/db:/var/lib/postgresql/data
   app:
     build:

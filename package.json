@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "": "",
+    "frontend:start:dev": "webpack-dev-server --config frontend/config/webpack.development.js",
+    "frontend:build:dev": "webpack --config frontend/config/webpack.development.js",
+    "frontend:build": "webpack --config frontend/config/webpack.production.js",
     "backend:start:dev": "ts-node-dev ./backend/app.ts",
     "backend:start": "ts-node ./backend/app.ts"
   },

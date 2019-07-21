@@ -9,7 +9,8 @@
     "frontend:build:dev": "webpack --config frontend/config/webpack.development.js",
     "frontend:build": "webpack --config frontend/config/webpack.production.js",
     "backend:start:dev": "ts-node-dev ./backend/app.ts",
-    "backend:start": "ts-node ./backend/app.ts"
+    "backend:start": "ts-node ./backend/app.ts",
+    "backend:test": "export NODE_ENV=test ; sequelize db:migrate ; jest --config backend/config/jest.js --detectOpenHandles --forceExit; sequelize db:migrate:undo:all"
   },
   "repository": {
     "type": "git",

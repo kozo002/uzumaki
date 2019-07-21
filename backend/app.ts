@@ -7,11 +7,13 @@ if (process.env.NODE_ENV !== 'production') {
 
 import cors from './config/cors'
 import passport from './config/passport'
+import authController from './app/controllers/authController'
 
 const app = express()
 cors(app)
 passport()
 
+app.use(authController)
 app.get('/', (req, res) => {
   res.send('OK')
 })

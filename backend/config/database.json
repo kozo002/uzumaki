@@ -5,7 +5,15 @@
     "database": "postgres",
     "host": "db",
     "port": 5432,
-    "dialect": "postgresql"
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "uzumaki",
+    "password": "password",
+    "database": "postgres",
+    "host": "db_test",
+    "port": 5432,
+    "dialect": "postgres"
   },
   "production": {
     "use_env_variable": "DATABASE_URL"

@@ -6,9 +6,11 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import cors from './config/cors'
+import passport from './config/passport'
 
 const app = express()
 cors(app)
+passport()
 
 app.get('/', (req, res) => {
   res.send('OK')

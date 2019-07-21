@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       email: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       githubId: {
@@ -30,6 +30,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Users');
+    return queryInterface.dropTable('users');
   }
 };

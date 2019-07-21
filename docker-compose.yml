@@ -10,6 +10,13 @@ services:
       POSTGRES_PASSWORD: password
     volumes:
       - $PWD/docker-data/db:/var/lib/postgresql/data
+  db_test:
+    image: postgres:11
+    ports:
+      - 15432:5432
+    environment:
+      POSTGRES_USER: uzumaki
+      POSTGRES_PASSWORD: password
   app:
     build:
       context: .
@@ -18,5 +25,15 @@ services:
     depends_on:
       - db
     command: ./bin/wait_for_it.sh db:5432 -- npm run backend:start:dev
+    volumes:
+      - .:/app
+  test:
+    build:
+      context: .
+    ports:
+      - 18101:8101
+    depends_on:
+      - db_test
+    command: ./bin/wait_for_it.sh db_test:5432 -- npm run backend:test
     volumes:
       - .:/app

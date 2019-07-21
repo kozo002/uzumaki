@@ -4,7 +4,7 @@ const devCORSOrigins = ['http://localhost:8080']
 const prodCORSOrigins = ['https://uzumaki.zochang.com']
 const CORSOrigins = process.env.NODE_ENV === 'production' ? prodCORSOrigins : devCORSOrigins
 
-export function cors (app: Express) {
+export default function cors (app: Express) {
   app.use(function(req, res, next) {
     let result = 'null'
     const { origin } = req.headers

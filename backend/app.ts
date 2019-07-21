@@ -1,7 +1,7 @@
 import * as path from 'path'
 import * as express from 'express'
 
-import { cors } from './config/cors'
+import cors from './config/cors'
 
 const app = express()
 cors(app)

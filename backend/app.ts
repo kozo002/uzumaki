@@ -1,5 +1,9 @@
-import * as path from 'path'
 import * as express from 'express'
+import * as Dotenv from 'dotenv'
+
+if (process.env.NODE_ENV !== 'production') {
+  Dotenv.config({ path: '.env.dev' })
+}
 
 import cors from './config/cors'
 

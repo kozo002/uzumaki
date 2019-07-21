@@ -1,15 +1,13 @@
-import * as path from 'path';
-import * as express from 'express';
+import * as path from 'path'
+import * as express from 'express'
+
+import { cors } from './config/cors'
+
 const app = express()
+cors(app)
 
-const indexHTMLFile = path.resolve(__dirname, '../frontend/dist/index.html')
-
-// route for static files
-app.use(express.static('./frontend/dist'))
-
-// route for fallback index.html
-app.use((req, res) => {
-  res.status(200).sendFile(indexHTMLFile)
+app.get('/', (req, res) => {
+  res.send('OK')
 })
 
 const port = process.env.PORT || 8101

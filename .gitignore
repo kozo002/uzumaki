@@ -62,3 +62,4 @@ typings/
 
 /frontend/dist
 /docker-data
+.env.dev

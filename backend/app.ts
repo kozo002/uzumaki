@@ -1,12 +1,6 @@
-const path = require('path')
-const express = require('express')
+import path from 'path';
+import express from 'express';
 const app = express()
-
-const models = require('./app/models')
-;(async function() {
-  const todos = await models.todo.findAll()
-  console.log('--->', todos)
-})()
 
 const indexHTMLFile = path.resolve(__dirname, '../frontend/dist/index.html')
 

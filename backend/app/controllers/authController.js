@@ -1,5 +1,5 @@
-import { Router } from 'express'
-import * as passport from 'passport'
+const { Router } = require('express')
+const passport = require('passport')
 
 const router = Router()
 
@@ -12,9 +12,8 @@ router.get('/auth/github', passport.authenticate('github', {
 router.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/auth' }),
   (req, res) => {
-    // Successful authentication, redirect home.
     res.redirect('/')
   }
 )
 
-export default router
+module.exports = router

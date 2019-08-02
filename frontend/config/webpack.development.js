@@ -1,5 +1,6 @@
 const path = require('path')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
+const Dotenv = require('dotenv-webpack')
 
 module.exports = {
   mode: 'development',
@@ -18,7 +19,10 @@ module.exports = {
       template: './frontend/public/index.html',
       filename: 'index.html',
       inject: 'body'
-    })
+    }),
+    new Dotenv({
+      path: './.env.dev',
+    }),
   ],
   module: {
     rules: [

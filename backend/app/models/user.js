@@ -1,7 +1,8 @@
 'use strict';
-const axios = require('axios')
 
 module.exports = (sequelize, DataTypes) => {
+  const axios = require('axios')
+
   const user = sequelize.define('user', {
     name: DataTypes.STRING,
     email: DataTypes.STRING,
@@ -19,26 +20,30 @@ module.exports = (sequelize, DataTypes) => {
     return (res.data.find(it => it.primary) || {}).email
   }
 
-  user.handleGitHubCallback = async function (token, profile) {
-    const { user: User, accessToken: AccessToken } = sequelize.models
-    const email = await User.fetchGitHubEmail(token)
-    let user = await User.findOne({ where: { githubId: profile.id } })
-    const transaction = await sequelize.transaction()
-
+  user.findOrCreateBy = async function ({ name, githubId, email }, options = {}) {
+    let user = await this.findOne({ where: { githubId } })
     if (user === null) {
-      const data = { name: profile.username, githubId: profile.id, email }
-      user = await User.create(data, { transaction })
+      user = await this.create({ name, githubId, email }, options)
     } else if (email) {
-      user.update({ email }, { transaction })
-    }
-    const accessTokens = await user.getAccessTokens()
-    const accessToken = accessTokens.find(it => it.provider === 'github')
-    if (accessToken) {
-      await accessToken.update({ token }, { transaction })
-    } else {
-      await AccessToken.create({ userId: user.id, token, provider: 'github' }, { transaction })
+      user.update({ name, email }, options)
     }
     return user
+  }
+
+  user.prototype.findGitHubAccessToken = async function () {
+    const accessTokens = await this.getAccessTokens()
+    return accessTokens.find(it => it.provider === 'github')
+  }
+
+  user.prototype.updateOrCreateAccessToken = async function ({ token }, options = {}) {
+    const { accessToken: AccessToken } = sequelize.models
+    let accessToken = await this.findGitHubAccessToken()
+    if (accessToken) {
+      await accessToken.update({ token }, options)
+    } else {
+      accessToken = await AccessToken.create({ userId: this.id, token, provider: 'github' }, options)
+    }
+    return accessToken
   }
 
   return user;

@@ -1,45 +1,128 @@
-const models = require('../../app/models')
-
-const dummyToken = 'dummy token'
-const dummyProfile = { id: 100, username: 'exampleuser' }
-
 describe('User', () => {
-  describe('handleGitHubCallback', () => {
-    describe('when the user has not existed', () => {
+  describe('.fetchGitHubEmail', () => {
+    it('fetches and returns primary email', async () => {
+      const dummyToken = 'dummy token'
+      const dummyEmail = 'dummy@email.com'
+      const axios = require('axios')
+      axios.get.mockResolvedValue({
+        data: [{ primary: true, email: dummyEmail }, { email: 'hoge' }]
+      })
+      const User = require('../../app/models').user
+      const email = await User.fetchGitHubEmail(dummyToken)
+      expect(email).toEqual(dummyEmail)
+      expect(axios.get).toHaveBeenCalledWith(
+        'https://api.github.com/user/emails',
+        { headers: { Authorization: 'token dummy token' } }
+      )
+    })
+  })
+
+  describe('.findOrCreateBy', () => {
+    describe('when the user does not exist', () => {
       it('creates a new user', async () => {
-        await models.user.handleGitHubCallback(dummyToken, dummyProfile)
-        const user = await models.user.findOne({
-          where: { name: dummyProfile.username, githubId: dummyProfile.id }
+        const dummyName = 'dummy'
+        const dummyGithubId = 100
+        const dummyEmail = 'dummy@example.com'
+        const User = require('../../app/models').user
+        expect(await User.count()).toEqual(0)
+        const user = await User.findOrCreateBy({
+          name: dummyName,
+          githubId: dummyGithubId,
+          email: dummyEmail,
         })
-        expect(user).not.toBeNull()
-        const accessToken = await models.accessToken.findOne({
-          where: { userId: user.id, token: dummyToken }
-        })
-        expect(accessToken).not.toBeNull()
+        expect(user.name).toEqual(dummyName)
+        expect(user.githubId).toEqual(dummyGithubId)
+        expect(user.email).toEqual(dummyEmail)
+        expect(await User.count()).toEqual(1)
       })
     })
 
-    describe('when the user has existed', () => {
-      let user, accessToken
-
-      beforeEach(async () => {
-        user = await models.user.create({
-          name: dummyProfile.username,
-          githubId: dummyProfile.id,
+    describe('when the user exists', () => {
+      it('does not create a new user', async () => {
+        const dummyName = 'dummy'
+        const dummyGithubId = 100
+        const dummyEmail = 'dummy@example.com'
+        const User = require('../../app/models').user
+        const user = await User.create({
+          name: 'example',
+          githubId: dummyGithubId,
+          email: 'example@example.com',
         })
-        accessToken = await models.accessToken.create({
-          userId: user.id,
-          token: 'existing token',
-          provider: 'github',
+        expect(await User.count()).toEqual(1)
+        const user2 = await User.findOrCreateBy({
+          name: dummyName,
+          githubId: dummyGithubId,
+          email: dummyEmail,
         })
+        expect(user2.name).toEqual(dummyName)
+        expect(user2.githubId).toEqual(user.githubId)
+        expect(user2.email).toEqual(dummyEmail)
+        expect(await User.count()).toEqual(1)
       })
+    })
+  })
 
-      it('updates the user', async () => {
-        await models.user.handleGitHubCallback(dummyToken, dummyProfile)
-        const accessToken = await models.accessToken.findOne({
-          where: { userId: user.id, token: dummyToken }
+  describe('#findGitHubAccessToken', () => {
+    it('gets github accessToken from database', async () => {
+      const models = require('../../app/models')
+      const AccessToken = models.accessToken
+      const User = models.user
+      const user = await User.create({
+        name: 'hoge',
+        githubId: 100,
+        email: 'example@example.com',
+      })
+      const accessToken = await AccessToken.create({
+        userId: user.id, token: 'hoge', provider: 'github'
+      })
+      const accessToken2 = await user.findGitHubAccessToken()
+      expect(accessToken2.id).toEqual(accessToken.id)
+    })
+  })
+
+  describe('#updateOrCreateAccessToken', () => {
+    describe('when the accessToken does not exist', () => {
+      it('creates a new accessToken', async () => {
+        const models = require('../../app/models')
+        const User = models.user
+        const AccessToken = models.accessToken
+        const user = await User.create({
+          name: 'example',
+          githubId: 100,
+          email: 'example@example.com',
         })
-        expect(accessToken).not.toBeNull()
+        const dummyToken = 'hoge'
+        expect(await AccessToken.count()).toEqual(0)
+        const accessToken = await user.updateOrCreateAccessToken({ token: dummyToken })
+        expect(accessToken.userId).toEqual(user.id)
+        expect(accessToken.token).toEqual(dummyToken)
+        expect(await AccessToken.count()).toEqual(1)
+      })
+    })
+
+    describe('when the accessToken exists', () => {
+      it('does not create a new accessToken', async () => {
+        const models = require('../../app/models')
+        const User = models.user
+        const AccessToken = models.accessToken
+        const user = await User.create({
+          name: 'example',
+          githubId: 100,
+          email: 'example@example.com',
+        })
+        const dummyToken = 'hoge'
+        const dummyToken2 = 'hoge2'
+        const accessToken = await AccessToken.create({
+          userId: user.id,
+          token: dummyToken,
+          provider: 'github'
+        })
+        expect(await AccessToken.count()).toEqual(1)
+        const accessToken2 = await user.updateOrCreateAccessToken({ token: dummyToken2 })
+        expect(accessToken2.userId).toEqual(user.id)
+        expect(accessToken2.id).toEqual(accessToken.id)
+        expect(accessToken2.token).toEqual(dummyToken2)
+        expect(await AccessToken.count()).toEqual(1)
       })
     })
   })

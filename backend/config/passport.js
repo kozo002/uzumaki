@@ -11,18 +11,14 @@ module.exports = function passportConfig () {
     done(null, user)
   })
 
-  passport.use('github', new GitHubStrategy({
+  passport.use('github', new GitHubStrategy(
+    {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
       callbackURL: process.env.GITHUB_AUTH_CALLBACK_URL,
     },
     async (token, refreshToken, profile, cb) => {
-      try {
-        const user = await models.user.handleGitHubCallback(token, profile)
-        cb(null, user)
-      } catch (err) {
-        cb(err, false)
-      }
+      cb(null, { token, profile })
     }
   ))
 }

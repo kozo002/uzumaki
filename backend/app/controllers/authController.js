@@ -1,5 +1,8 @@
 const { Router } = require('express')
 const passport = require('passport')
+const db = require('../models')
+const { user: User } = db
+const JWT = require('../utils/jwt')
 
 const router = Router()
 const clientOrigin = (() => {
@@ -18,11 +21,33 @@ router.get('/auth/github', passport.authenticate('github', {
   scope: ['public_repo', 'user:email'],
 }))
 
-router.get('/auth/github/callback',
-  passport.authenticate('github', { failureRedirect: '/auth' }),
-  (req, res) => {
-    res.redirect(clientOrigin)
+router.get('/auth/github/callback', (req, res, next) => {
+  passport.authenticate('github', async (err, data) => {
+    try {
+      if (err) { throw err }
+      const { token, profile } = data
+      const transaction = await db.sequelize.transaction()
+      const email = await User.fetchGitHubEmail(token)
+      const attrs = { name: profile.username, githubId: profile.id, email }
+      const user = await User.findOrCreateBy(attrs, { transaction })
+      await user.updateOrCreateAccessToken({ token }, { transaction })
+      const jwt = JWT.encode(user.id)
+      res.redirect(`${clientOrigin}/loggedIn?token=${jwt}`)
+    } catch (err) {
+      console.error(err)
+      res.redirect(`${clientOrigin}/error`)
+    }
+  })(req, res, next)
+})
+
+router.get('/auth/verification', (req, res) => {
+  try {
+    JWT.decode(req.query.token)
+    res.send({ status: 'OK' }, 200)
+  } catch (err) {
+    console.error(err)
+    res.send({ error: err.message }, 422)
   }
-)
+})
 
 module.exports = router

@@ -1,7 +1,8 @@
 'use strict';
-const axios = require('axios')
 
 module.exports = (sequelize, DataTypes) => {
+  const axios = require('axios')
+
   const user = sequelize.define('user', {
     name: DataTypes.STRING,
     email: DataTypes.STRING,
@@ -24,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     if (user === null) {
       user = await this.create({ name, githubId, email }, options)
     } else if (email) {
-      user.update({ email }, options)
+      user.update({ name, email }, options)
     }
     return user
   }
@@ -36,11 +37,11 @@ module.exports = (sequelize, DataTypes) => {
 
   user.prototype.updateOrCreateAccessToken = async function ({ token }, options = {}) {
     const { accessToken: AccessToken } = sequelize.models
-    const accessToken = await this.findGitHubAccessToken()
+    let accessToken = await this.findGitHubAccessToken()
     if (accessToken) {
       await accessToken.update({ token }, options)
     } else {
-      await AccessToken.create({ userId: this.id, token, provider: 'github' }, options)
+      accessToken = await AccessToken.create({ userId: this.id, token, provider: 'github' }, options)
     }
     return accessToken
   }

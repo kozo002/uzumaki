@@ -23,17 +23,19 @@ router.get('/auth/github', passport.authenticate('github', {
 
 router.get('/auth/github/callback', (req, res, next) => {
   passport.authenticate('github', async (err, data) => {
+    const transaction = await db.sequelize.transaction()
     try {
       if (err) { throw err }
       const { token, profile } = data
-      const transaction = await db.sequelize.transaction()
       const email = await User.fetchGitHubEmail(token)
       const attrs = { name: profile.username, githubId: profile.id, email }
       const user = await User.findOrCreateBy(attrs, { transaction })
       await user.updateOrCreateAccessToken({ token }, { transaction })
       const jwt = JWT.encode(user.id)
+      transaction.commit()
       res.redirect(`${clientOrigin}/loggedIn?token=${jwt}`)
     } catch (err) {
+      transaction.rollback()
       console.error(err)
       res.redirect(`${clientOrigin}/error`)
     }

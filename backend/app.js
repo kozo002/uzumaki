@@ -1,8 +1,8 @@
 const express = require('express')
-const Dotenv = require('dotenv')
 const passport = require('passport')
 
 if (process.env.NODE_ENV !== 'production') {
+  const Dotenv = require('dotenv')
   Dotenv.config({ path: '.env.dev' })
 }
 

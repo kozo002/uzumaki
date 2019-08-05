@@ -1,17 +1,30 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
-type PropsType = {
-  name: string,
-}
+import Auth from './containers/Auth'
 
-function Hello(props: PropsType) {
+import Home from './pages/Home'
+import LoggedIn from './pages/LoggedIn'
+import Login from './pages/Login'
+import Logout from './pages/Logout'
+
+function App () {
   return (
-    <div>Hello World {props.name}</div>
+    <Router>
+      <Switch>
+        <Route path="/loggedIn" component={LoggedIn} />
+        <Route path="/login" component={Login} />
+        <Auth>
+          <Route exact path="/" component={Home} />
+          <Route path="/logout" component={Logout} />
+        </Auth>
+      </Switch>
+    </Router>
   )
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   const appNode = document.getElementById('app')
-  ReactDOM.render(<Hello name="example" />, appNode)
+  ReactDOM.render(<App />, appNode)
 })

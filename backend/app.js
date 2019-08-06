@@ -9,10 +9,12 @@ if (process.env.NODE_ENV !== 'production') {
 const cors = require('./config/cors')
 const passportConfig = require('./config/passport')
 const authController = require('./app/controllers/authController')
+const GraphQL = require('./app/graphql')
 
 const app = express()
 cors(app)
 passportConfig()
+GraphQL(app)
 
 app.use(passport.initialize())
 app.use(passport.session())

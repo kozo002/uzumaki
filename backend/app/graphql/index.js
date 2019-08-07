@@ -1,40 +1,20 @@
+const glob = require('glob')
+const path = require('path')
+const fs = require('fs')
 const { ApolloServer, gql } = require('apollo-server-express')
 const { createContext } = require('dataloader-sequelize')
 
 const db = require('../models')
 
-const typeDefs = gql`
-  scalar Date
+const schemaPaths = glob.sync(path.resolve(__dirname, 'schemas/*.graphql'))
+const schemas = schemaPaths.map(it => fs.readFileSync(it, { encoding: 'utf-8' })).join("\n")
+const typeDefs = gql`${schemas}`
 
-  type User {
-    id: ID!
-    githubId: Int!
-    email: String!
-    accessTokens: [AccessToken]
-    createdAt: Date
-    updatedAt: Date
-  }
-
-  type AccessToken {
-    token: String!
-    user: User!
-    provider: String!
-    createdAt: Date
-    updatedAt: Date
-  }
-
-  type Query {
-    users: [User!]!
-    user(id: ID!): User
-  }
-`
-
-const resolvers = {
-  User: require('./resolvers/User'),
-  AccessToken: require('./resolvers/AccessToken'),
-  Query: require('./resolvers/Query'),
-  Date: require('./resolvers/Date'),
-}
+const resolverPaths = glob.sync(path.resolve(__dirname, 'resolvers/*.js'))
+const resolvers = resolverPaths.reduce((acc, it) => {
+  const name = path.basename(it).split('.')[0]
+  return { ...acc, [name]: require(it) }
+}, {})
 
 const apolloServer = new ApolloServer({
   typeDefs,

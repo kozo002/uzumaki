@@ -19,7 +19,10 @@ export default function Home () {
   const { loading, error, data } = useQuery(schema, { variables: {} })
 
   if (loading) { return 'loading' }
-  if (error) { return 'error' }
+  if (error) {
+    console.error(error)
+    return 'error'
+  }
 
   return (
     <div>

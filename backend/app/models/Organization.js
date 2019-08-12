@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Organization.associate = function(models) {
     Organization.belongsToMany(models.User, {
-      through: 'OrganizationUserMembership',
+      through: 'OrganizationUserMemberships',
       foreignKey: 'organizationId',
       otherKey: 'userId',
     })

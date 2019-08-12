@@ -1,0 +1,7 @@
+type AccessToken {
+  token: String!
+  user: User!
+  provider: String!
+  createdAt: Date
+  updatedAt: Date
+}

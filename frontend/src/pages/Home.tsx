@@ -1,11 +1,15 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
+
+import Session from '../models/Session'
+import Header from '../components/Header'
 
 export default function Home () {
   return (
-    <div>
-      Home
-      <Link to="/logout">logout</Link>
-    </div>
+    <>
+      <Header isLoggedIn={Session.isLoggedIn} />
+      <div className="container pt-3">
+        Home
+      </div>
+    </>
   )
 }

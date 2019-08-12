@@ -2,6 +2,7 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { ApolloProvider } from '@apollo/react-hooks'
+import 'bootstrap/scss/bootstrap.scss'
 
 import client from './graphql/client'
 

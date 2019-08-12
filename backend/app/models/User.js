@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = function(models) {
     User.hasMany(models.AccessToken, { foreignKey: 'userId' })
+    User.belongsToMany(models.Organization, {
+      through: 'OrganizationUserMemberships',
+      foreignKey: 'userId',
+      otherKey: 'organizationId',
+    })
   };
 
   User.fetchGitHubEmail = async function (token) {

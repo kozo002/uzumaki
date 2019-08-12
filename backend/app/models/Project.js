@@ -5,7 +5,11 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT
   }, {});
   Project.associate = function(models) {
-    // associations can be defined here
+    Project.belongsToMany(models.Organization, {
+      through: 'OrganizationProjectOwnerships',
+      foreignKey: 'projectId',
+      otherKey: 'organizationId',
+    })
   };
   return Project;
 };

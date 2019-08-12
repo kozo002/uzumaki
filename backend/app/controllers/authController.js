@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const passport = require('passport')
 const db = require('../models')
-const { user: User } = db
+const { User } = db
 const JWT = require('../utils/jwt')
 
 const router = Router()

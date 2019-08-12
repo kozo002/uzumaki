@@ -1,15 +1,15 @@
 'use strict';
 
 module.exports = (sequelize, DataTypes) => {
-  const accessToken = sequelize.define('accessToken', {
+  const AccessToken = sequelize.define('AccessToken', {
     token: DataTypes.STRING,
     provider: DataTypes.STRING,
     userId: DataTypes.INTEGER
   }, {});
 
-  accessToken.associate = function(models) {
-    accessToken.belongsTo(models.user)
+  AccessToken.associate = function(models) {
+    AccessToken.belongsTo(models.User, { foreignKey: 'userId' })
   };
 
-  return accessToken;
+  return AccessToken;
 };

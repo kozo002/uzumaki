@@ -31,6 +31,10 @@ router.get('/auth/github/callback', (req, res, next) => {
       const attrs = { name: profile.username, githubId: profile.id, email }
       const user = await User.findOrCreateBy(attrs, { transaction })
       await user.updateOrCreateAccessToken({ token }, { transaction })
+      const organizations = await user.getOrganizations()
+      if (organizations.length === 0) {
+        await user.createOrganization({ name: user.name })
+      }
       const jwt = JWT.encode(user.id)
       transaction.commit()
       res.redirect(`${clientOrigin}/loggedIn?token=${jwt}`)

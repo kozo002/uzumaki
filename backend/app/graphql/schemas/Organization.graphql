@@ -1,0 +1,9 @@
+type Organization {
+  id: ID!
+  name: String!
+  description: String
+  projects: [Project]!
+  users: [User]!
+  createdAt: Date
+  updatedAt: Date
+}

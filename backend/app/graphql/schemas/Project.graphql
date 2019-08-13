@@ -1,0 +1,9 @@
+type Project {
+  id: ID!
+  name: String!
+  description: String
+  organizations: [Organization]!
+  users: [User]!
+  createdAt: Date
+  updatedAt: Date
+}

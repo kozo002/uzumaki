@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       otherKey: 'userId',
     })
     Organization.belongsToMany(models.Project, {
-      through: 'OrganizationProjectOwnership',
+      through: 'OrganizationProjectOwnerships',
       foreignKey: 'organizationId',
       otherKey: 'projectId',
     })

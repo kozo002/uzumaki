@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     projectId: DataTypes.INTEGER,
     organizationId: DataTypes.INTEGER
   }, {});
+
   OrganizationProjectOwnership.associate = function(models) {
     OrganizationProjectOwnership.belongsTo(models.Organization, {
       foreignKey: 'organizationId'

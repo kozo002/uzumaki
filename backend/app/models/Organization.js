@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.TEXT
   }, {});
+
   Organization.associate = function(models) {
     Organization.belongsToMany(models.User, {
       through: 'OrganizationUserMemberships',
@@ -16,5 +17,20 @@ module.exports = (sequelize, DataTypes) => {
       otherKey: 'projectId',
     })
   };
+
+  Organization.findOneBelonggingToUser = async function ({ id, userId }) {
+    const records = await sequelize.query(`
+      select * from "Organizations"
+      inner join "OrganizationUserMemberships" on "OrganizationUserMemberships"."organizationId" = "Organizations"."id"
+      where "OrganizationUserMemberships"."userId" = ?
+      and "Organizations"."id" = ?
+    `, {
+      replacements: [userId, id],
+      model: Organization,
+      mapToModel: true
+    })
+    return records[0] || null
+  }
+
   return Organization;
 };

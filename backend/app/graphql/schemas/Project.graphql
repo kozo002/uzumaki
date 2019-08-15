@@ -4,6 +4,7 @@ type Project {
   description: String
   organizations: [Organization]!
   users: [User]!
+  stories: [Story]!
   createdAt: Date
   updatedAt: Date
 }

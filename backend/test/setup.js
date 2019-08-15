@@ -4,7 +4,7 @@ global.afterEach(() => {
   Object.values(models.sequelize.models).map(async (model) => {
     await model.destroy({
       truncate: true,
-      logging: true,
+      logging: false,
       restartIdentity: true,
     })
   })

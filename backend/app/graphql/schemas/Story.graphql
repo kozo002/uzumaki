@@ -18,3 +18,11 @@ enum StoryState {
   REJECTED
   ACCEPTED
 }
+
+type StoryInput {
+  title: String!
+  description: String
+  state: StoryState!
+  points: Int
+  requesterId: Int
+}

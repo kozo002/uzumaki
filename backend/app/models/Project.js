@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'projectId',
       otherKey: 'organizationId',
     })
+
+    Project.hasMany(models.Story, {
+      foreignKey: 'projectId',
+    })
   };
 
   Project.findOneBelonggingToUser = async function ({ id, userId }) {

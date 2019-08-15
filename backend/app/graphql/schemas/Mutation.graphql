@@ -1,0 +1,3 @@
+type Mutation {
+  updateOrganization(id: ID!, name: String!, description: String): Organization
+}

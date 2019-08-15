@@ -1,8 +1,16 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Organization = sequelize.define('Organization', {
-    name: DataTypes.STRING,
-    description: DataTypes.TEXT
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
+    },
+    description: {
+      type: DataTypes.TEXT,
+    },
   }, {});
 
   Organization.associate = function(models) {

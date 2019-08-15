@@ -1,4 +1,21 @@
+const { ValidationError } = require('sequelize')
+
 describe('Organization', () => {
+  describe('validations', () => {
+    describe('name', () => {
+      it('must not be a null', async () => {
+        const { Organization } = require('../../app/models')
+        try {
+          await Organization.create({ name: null })
+        } catch (err) {
+          expect(err).toBeInstanceOf(ValidationError)
+        }
+        const count = await Organization.count()
+        expect(count).toEqual(0)
+      })
+    })
+  })
+
   it('has many projects', async () => {
     const { Organization, OrganizationProjectOwnership } = require('../../app/models')
     const organization = await Organization.create({ name: 'example org', description: 'example desc' })

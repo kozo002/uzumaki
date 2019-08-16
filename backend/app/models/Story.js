@@ -28,6 +28,21 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
+    type: {
+      type: DataTypes.ENUM,
+      values: [
+        'feature',
+        'bug',
+        'chore',
+        'release',
+      ],
+      defaultValue: 'feature',
+      allowNull: false,
+      validate: {
+        notNull: true,
+        notEmpty: true,
+      },
+    },
     points: {
       type: DataTypes.INTEGER,
     },

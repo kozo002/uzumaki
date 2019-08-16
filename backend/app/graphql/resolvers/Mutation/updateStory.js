@@ -2,12 +2,12 @@ const { ForbiddenError, UserInputError } = require('apollo-server-express')
 const { ValidationError } = require('sequelize')
 
 module.exports = async (parent, args, context, info) => {
-  const { projectId, input } = args
+  const { projectId, id, input } = args
   const { user, db } = context
   const story = await db.Story.findOneBelonggingToUser({
     projectId,
     userId: user.id,
-    id: input.id,
+    id,
   })
   if (!story) {
     throw new ForbiddenError('The story does not belong to the project')

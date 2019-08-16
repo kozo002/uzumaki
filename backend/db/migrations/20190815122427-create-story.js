@@ -28,6 +28,17 @@ module.exports = {
         ],
         defaultValue: 'unstarted',
       },
+      type: {
+        allowNull: false,
+        type: Sequelize.ENUM,
+        values: [
+          'feature',
+          'bug',
+          'chore',
+          'release',
+        ],
+        defaultValue: 'feature',
+      },
       inIcebox: {
         allowNull: false,
         type: Sequelize.BOOLEAN,

@@ -21,8 +21,8 @@ describe('updateStory', () => {
           })
           const dummyArgs = {
             projectId: project.id,
+            id: story.id,
             input: {
-              id: story.id,
               title: 'updated title',
               state: 'started',
             }
@@ -53,8 +53,8 @@ describe('updateStory', () => {
           })
           const dummyArgs = {
             projectId: project.id,
+            id: story.id,
             input: {
-              id: story.id,
               title: '',
               state: 'started',
             }
@@ -95,8 +95,8 @@ describe('updateStory', () => {
         })
         const dummyArgs = {
           projectId: project.id,
+          id: story2.id,
           input: {
-            id: story2.id,
             title: '',
             state: 'started',
           }
@@ -135,8 +135,8 @@ describe('updateStory', () => {
       })
       const dummyArgs = {
         projectId: project2.id,
+        id: story2.id,
         input: {
-          id: story2.id,
           title: '',
           state: 'started',
         }

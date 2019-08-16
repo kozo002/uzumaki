@@ -19,7 +19,7 @@ enum StoryState {
   ACCEPTED
 }
 
-type StoryInput {
+input StoryInput {
   title: String!
   description: String
   state: StoryState!

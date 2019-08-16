@@ -3,4 +3,5 @@ type Mutation {
   createProject(organizationId: ID!, name: String!, description: String): Project
   updateProject(id: ID!, name: String!, description: String): Project
   createStory(projectId: ID!, input: StoryInput!): Story
+  updateStory(projectId: ID!, input: StoreyInput!): Story
 }

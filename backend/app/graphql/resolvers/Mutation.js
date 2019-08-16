@@ -1,9 +1,11 @@
-const { ForbiddenError, UserInputError } = require('apollo-server-express')
-const { ValidationError } = require('sequelize')
+const glob = require('glob')
+const path = require('path')
+const fs = require('fs')
 
-module.exports = {
-  updateOrganization: require('./Mutation/updateOrganization'),
-  createProject: require('./Mutation/createProject'),
-  updateProject: require('./Mutation/updateProject'),
-  createStory: require('./Mutation/createStory'),
-}
+const mutationPaths = glob.sync(path.resolve(__dirname, 'Mutation/*.js'))
+const mutations = mutationPaths.reduce((acc, it) => {
+  const name = path.basename(it).split('.')[0]
+  return { ...acc, [name]: require(it) }
+}, {})
+
+module.exports = mutations

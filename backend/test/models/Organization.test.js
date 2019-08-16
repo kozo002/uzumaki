@@ -4,7 +4,7 @@ describe('Organization', () => {
   describe('validations', () => {
     describe('name', () => {
       it('must not be a null', async () => {
-        const { Organization } = require('../../app/models')
+        const { Organization } = require('@/app/models')
         try {
           await Organization.create({ name: null })
         } catch (err) {
@@ -17,7 +17,7 @@ describe('Organization', () => {
   })
 
   it('has many projects', async () => {
-    const { Organization, OrganizationProjectOwnership } = require('../../app/models')
+    const { Organization, OrganizationProjectOwnership } = require('@/app/models')
     const organization = await Organization.create({ name: 'example org', description: 'example desc' })
     const project = await organization.createProject({ name: 'example project', description: 'example desc' })
     expect(project).not.toBeNull()
@@ -26,7 +26,7 @@ describe('Organization', () => {
   })
 
   it('has many users', async () => {
-    const { Organization, OrganizationUserMembership } = require('../../app/models')
+    const { Organization, OrganizationUserMembership } = require('@/app/models')
     const organization = await Organization.create({ name: 'example org', description: 'example desc' })
     const user = await organization.createUser({ name: 'example user', email: 'example@example.com', githubId: 1 })
     expect(user).not.toBeNull()

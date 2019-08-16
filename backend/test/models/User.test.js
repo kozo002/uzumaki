@@ -1,6 +1,6 @@
 describe('User', () => {
   it('has many organizations', async () => {
-    const { User, OrganizationUserMembership } = require('../../app/models')
+    const { User, OrganizationUserMembership } = require('@/app/models')
     const user = await User.create({ name: 'example', email: 'example@example.com', githubId: 1 })
     const organization = await user.createOrganization({ name: 'example' })
     expect(organization).not.toBeNull()
@@ -21,7 +21,7 @@ describe('User', () => {
       axios.get.mockResolvedValue({
         data: [{ primary: true, email: dummyEmail }, { email: 'hoge' }]
       })
-      const User = require('../../app/models').User
+      const User = require('@/app/models').User
       const email = await User.fetchGitHubEmail(dummyToken)
       expect(email).toEqual(dummyEmail)
       expect(axios.get).toHaveBeenCalledWith(
@@ -37,7 +37,7 @@ describe('User', () => {
         const dummyName = 'dummy'
         const dummyGithubId = 100
         const dummyEmail = 'dummy@example.com'
-        const User = require('../../app/models').User
+        const User = require('@/app/models').User
         expect(await User.count()).toEqual(0)
         const user = await User.findOrCreateBy({
           name: dummyName,
@@ -56,7 +56,7 @@ describe('User', () => {
         const dummyName = 'dummy'
         const dummyGithubId = 100
         const dummyEmail = 'dummy@example.com'
-        const User = require('../../app/models').User
+        const User = require('@/app/models').User
         const user = await User.create({
           name: 'example',
           githubId: dummyGithubId,
@@ -78,7 +78,7 @@ describe('User', () => {
 
   describe('#findGitHubAccessToken', () => {
     it('gets github accessToken from database', async () => {
-      const models = require('../../app/models')
+      const models = require('@/app/models')
       const AccessToken = models.AccessToken
       const User = models.User
       const user = await User.create({
@@ -97,7 +97,7 @@ describe('User', () => {
   describe('#updateOrCreateAccessToken', () => {
     describe('when the accessToken does not exist', () => {
       it('creates a new accessToken', async () => {
-        const models = require('../../app/models')
+        const models = require('@/app/models')
         const User = models.User
         const AccessToken = models.AccessToken
         const user = await User.create({
@@ -116,7 +116,7 @@ describe('User', () => {
 
     describe('when the accessToken exists', () => {
       it('does not create a new accessToken', async () => {
-        const models = require('../../app/models')
+        const models = require('@/app/models')
         const User = models.User
         const AccessToken = models.AccessToken
         const user = await User.create({

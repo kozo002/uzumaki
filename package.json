@@ -32,6 +32,7 @@
     "@types/react-dom": "^16.8.4",
     "@types/sequelize": "^4.28.3",
     "@types/validator": "^10.11.1",
+    "@types/yup": "^0.26.22",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-client": "^2.6.4",
     "apollo-link-context": "^1.0.18",

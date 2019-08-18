@@ -6,6 +6,10 @@ export default class Session {
     return !!Storage.load('token')
   }
 
+  static get token (): string | null {
+    return Storage.load('token')
+  }
+
   static async verify() {
     const token = Storage.load('token')
     try {

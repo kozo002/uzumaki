@@ -5,7 +5,7 @@ import OrganizationList from '@/components/Organization/List'
 import MainContainer from '@/components/MainContainer'
 const OrganizationsQuery = require('@/graphql/Query/Organizations.graphql')
 
-export default function Home () {
+export default function Organizations () {
   const { loading, error, data } = useQuery(OrganizationsQuery)
 
   return (

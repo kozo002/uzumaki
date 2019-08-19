@@ -1,44 +1,57 @@
 import { FormikProps } from 'formik'
 
-export type ID = number
+declare global {
+  export type ID = number
 
-export type OrganizationT = {
-  id: ID,
-  name: string,
-  description?: string | null,
-  projects: [ProjectT]
-}
+  type OrganizationT = {
+    id: ID,
+    name: string,
+    description?: string | null,
+    projects: [ProjectT]
+  }
+  type OrganizationInputT = {
+    id?: ID,
+    name: string,
+    description?: string | null,
+  }
+  type OrganizationFormikPropsT = FormikProps<OrganizationInputT>
+  type CreateOrganizationPayload = {
+    createOrganization: OrganizationT
+  }
+  type UpdateOrganizationPayload = {
+    updateOrganization: OrganizationT
+  }
 
-export type ProjectT = {
-  id: ID,
-  name: string,
-  description?: string | null,
-}
+  type ProjectT = {
+    id: ID,
+    name: string,
+    description?: string | null,
+  }
+  type ProjectInputT = {
+    id?: number,
+    name: string,
+    description: string | null,
+  }
+  type ProjectFormikPropsT = FormikProps<ProjectInputT>
+  type CreateProjectPayload = {
+    createProject: ProjectT
+  }
+  type UpdateProjectPayload = {
+    updateProject: ProjectT
+  }
 
-export type ProjectInputT = {
-  id?: number,
-  name: string,
-  description: string | null,
-}
-export type ProjectFormikPropsT = FormikProps<ProjectInputT>
-export type CreateProjectPayload = {
-  createProject: ProjectT
-}
-export type UpdateProjectPayload = {
-  updateProject: ProjectT
-}
-
-export type RouteMatch = {
-  isExact: boolean,
-  params: {
-    [key: string]: string
-  },
-  path: string,
-  url: string,
-}
-export type RouteHistory = {
-  push: Function,
-  goBack: Function,
+  type RouteMatch = {
+    isExact: boolean,
+    params: {
+      [key: string]: string
+    },
+    path: string,
+    url: string,
+  }
+  type RouteHistory = {
+    push: Function,
+    goBack: Function,
+  }
 }
 
 declare module "*.graphql" {

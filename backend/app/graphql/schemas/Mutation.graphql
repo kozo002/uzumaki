@@ -1,4 +1,5 @@
 type Mutation {
+  createOrganization(name: String!, description: String): Organization
   updateOrganization(id: ID!, name: String!, description: String): Organization
   createProject(organizationId: ID!, name: String!, description: String): Project
   updateProject(id: ID!, name: String!, description: String): Project

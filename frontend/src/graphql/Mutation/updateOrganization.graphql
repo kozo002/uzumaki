@@ -1,0 +1,7 @@
+mutation updateOrganization($id: ID!, $name: String!, $description: String) {
+  updateOrganization(id: $id, name: $name, description: $description) {
+    id
+    name
+    description
+  }
+}

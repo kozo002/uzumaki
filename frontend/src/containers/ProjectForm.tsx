@@ -3,14 +3,6 @@ import { Formik, FormikActions } from 'formik'
 import { useMutation } from '@apollo/react-hooks'
 import get from 'lodash/get'
 
-import {
-  ProjectT,
-  ProjectInputT,
-  ProjectFormikPropsT,
-  CreateProjectPayload,
-  UpdateProjectPayload,
-} from '@/types/index.d'
-
 import { validationSchema } from '@/models/Project'
 const createProjectMutation = require('@/graphql/Mutation/createProject.graphql')
 const updateProjectMutation = require('@/graphql/Mutation/updateProject.graphql')
@@ -45,7 +37,7 @@ export default function ProjectForm (props: Props) {
     actions.setSubmitting(true)
     try {
       let res, id
-      if (project.id) {
+      if (project) {
         id = project.id
         const variables = { ...values, id }
         res = await updateProject({ variables })
@@ -59,6 +51,8 @@ export default function ProjectForm (props: Props) {
     } catch (err) {
       console.error(err)
       window.alert('Error ' + err.message)
+    } finally {
+      actions.setSubmitting(false)
     }
   }
 

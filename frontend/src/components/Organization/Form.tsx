@@ -6,7 +6,7 @@ type Props = {
   onSubmit: (e: React.FormEvent) => void,
   onChange: (e: React.ChangeEvent) => void,
   onBlur: (e: React.FocusEvent) => void,
-  values: ProjectInputT,
+  values: OrganizationInputT,
   errors: { [key: string]: string },
   isSubmitting: boolean,
 }
@@ -41,7 +41,7 @@ export default function Form (props: Props) {
               name="description"
               onChange={props.onChange}
               onBlur={props.onBlur}
-              value={props.values.description}
+              value={props.values.description || ''}
               disabled={props.isSubmitting}
             />
           </div>

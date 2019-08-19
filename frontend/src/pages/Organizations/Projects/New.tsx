@@ -1,6 +1,5 @@
 import * as React from 'react'
 
-import { RouteMatch, RouteHistory } from '@/types/index.d'
 import MainContainer from '@/components/MainContainer'
 import ProjectForm from '@/components/Project/Form'
 import ProjectFormContainer from '@/containers/ProjectForm'

@@ -3,6 +3,11 @@ import { FormikProps } from 'formik'
 declare global {
   export type ID = number
 
+  type UserT = {
+    id: ID,
+    name: string,
+  }
+
   type OrganizationT = {
     id: ID,
     name: string,

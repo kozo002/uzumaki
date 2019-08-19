@@ -3,34 +3,36 @@ import * as ReactDOM from 'react-dom'
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import { ApolloProvider } from '@apollo/react-hooks'
 
-import './styles/app.scss'
+import '@/styles/app.scss'
 import 'bootstrap/scss/bootstrap.scss'
 
-import client from './graphql/client'
+import client from '@/graphql/client'
 
-import Auth from './containers/Auth'
+import Auth from '@/containers/Auth'
 
-import Organizations from './pages/Organizations'
-import LoggedIn from './pages/LoggedIn'
-import Login from './pages/Login'
-import Logout from './pages/Logout'
-import OrganizationNew from './pages/Organizations/New'
-import OrganizationEdit from './pages/Organizations/Edit'
-import ProjectNew from './pages/Organizations/Projects/New'
-import ProjectEdit from './pages/Organizations/Projects/Edit'
+import Organizations from '@/pages/Organizations'
+import LoggedIn from '@/pages/LoggedIn'
+import Login from '@/pages/Login'
+import Logout from '@/pages/Logout'
+import OrganizationNew from '@/pages/Organizations/New'
+import OrganizationEdit from '@/pages/Organizations/Edit'
+import ProjectNew from '@/pages/Organizations/Projects/New'
+import ProjectEdit from '@/pages/Organizations/Projects/Edit'
 
-import Header from './components/Header'
-import Session from './models/Session'
+import Header from '@/components/Header'
+import CurrentUserContainer from '@/containers/CurrentUser'
 
 function App () {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <Header isLoggedIn={Session.isLoggedIn} />
         <Switch>
           <Route path="/loggedIn" component={LoggedIn} />
           <Route path="/login" component={Login} />
           <Auth>
+            <CurrentUserContainer
+              render={(user: UserT) => <Header user={user} />}
+            />
             <Switch>
               <Route exact path="/" render={() => <Redirect to="/organizations" />} />
               <Route exact path="/organizations" component={Organizations} />

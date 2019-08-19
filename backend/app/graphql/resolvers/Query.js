@@ -1,8 +1,10 @@
 const { EXPECTED_OPTIONS_KEY } = require('dataloader-sequelize')
 
 module.exports = {
-  organizations: async (parent, args, { user }, info) => {
-    return await user.getOrganizations()
+  organizations: async (parent, args, { user, db }, info) => {
+    return await user.getOrganizations({
+      order: [['createdAt', 'DESC']]
+    })
   },
 
   organization: (parent, { id }, { user, db }, info) => {

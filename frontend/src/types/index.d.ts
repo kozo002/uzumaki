@@ -1,3 +1,5 @@
+import { FormikProps } from 'formik'
+
 export type ID = number
 
 export type OrganizationT = {
@@ -13,6 +15,19 @@ export type ProjectT = {
   description?: string | null,
 }
 
+export type ProjectInputT = {
+  id?: number,
+  name: string,
+  description: string | null,
+}
+export type ProjectFormikPropsT = FormikProps<ProjectInputT>
+export type CreateProjectPayload = {
+  createProject: ProjectT
+}
+export type UpdateProjectPayload = {
+  updateProject: ProjectT
+}
+
 export type RouteMatch = {
   isExact: boolean,
   params: {
@@ -20,4 +35,13 @@ export type RouteMatch = {
   },
   path: string,
   url: string,
+}
+export type RouteHistory = {
+  push: Function,
+  goBack: Function,
+}
+
+declare module "*.graphql" {
+  const value: any;
+  export default value;
 }

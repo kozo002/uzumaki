@@ -2,7 +2,8 @@ import * as React from 'react'
 import chunk from 'lodash/chunk'
 import { Link } from 'react-router-dom'
 
-import { OrganizationT } from '../../types/index.d'
+import { OrganizationT } from '@/types/index.d'
+import * as r from '@/helpers/Route'
 
 interface Props {
   organizations: [OrganizationT]
@@ -17,7 +18,7 @@ export default function OrganizationList (props: Props) {
           <p>{org.description || 'no description'}</p>
           <Link
             className="btn btn-primary"
-            to={`/organizations/${org.id}/projects/new`}
+            to={r.newProjectPath(org.id)}
           >
             Add a new Project
           </Link>
@@ -29,6 +30,12 @@ export default function OrganizationList (props: Props) {
                   <div className="card-body">
                     <h3 className="h6">{project.name}</h3>
                     <p>{project.description || 'no description'}</p>
+                    <Link
+                      className="btn btn-primary"
+                      to={r.editProjectPath(org.id, project.id)}
+                    >
+                      Edit
+                    </Link>
                   </div>
                 </div>
               ))}

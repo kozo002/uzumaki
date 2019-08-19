@@ -1,17 +1,22 @@
 {
   "compilerOptions": {
-    "outDir": "../dist/",
+    "rootDir": "../../",
+    "outDir": "./frontend/dist/",
+    "typeRoots": ["./frontend/src/types"],
+    "baseUrl": "./frontend",
+    "paths": {
+      "@/*": ["src/*"],
+      "@": ["src"]
+    },
     "noImplicitAny": true,
     "sourceMap": true,
-    "module": "es6",
+    "module": "ESNext",
     "target": "es5",
     "jsx": "react",
     "allowJs": true,
-    "typeRoots": [
-      "../types"
-    ],
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "moduleResolution": "node"
-  }
+  },
+  "include": ["../src/**/*"]
 }

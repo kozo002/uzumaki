@@ -13,13 +13,14 @@ module.exports = {
       template: './frontend/public/index.html',
       filename: 'index.html',
       inject: 'body'
-    })
+    }),
   ],
   module: {
     rules: [
       {
         test: /\.(ts|tsx)$/,
         loader: 'ts-loader',
+        // loader: 'awesome-typescript-loader',
         exclude: /node_modules/,
         options: {
           configFile: 'frontend/config/tsconfig.json',
@@ -47,6 +48,9 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js']
+    extensions: ['.ts', '.tsx', '.js'],
+    alias: {
+      '@': path.resolve(__dirname, '../src'),
+    }
   },
 }

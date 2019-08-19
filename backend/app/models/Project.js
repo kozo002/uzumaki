@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Project.findOneBelonggingToUser = async function ({ id, userId }) {
     const records = await sequelize.query(`
-      select * from "Projects"
+      select "Projects".* from "Projects"
       inner join "OrganizationProjectOwnerships" on "OrganizationProjectOwnerships"."projectId" = "Projects"."id"
       inner join "Organizations" on "Organizations"."id" = "OrganizationProjectOwnerships"."organizationId"
       inner join "OrganizationUserMemberships" on "OrganizationUserMemberships"."organizationId" = "Organizations"."id"

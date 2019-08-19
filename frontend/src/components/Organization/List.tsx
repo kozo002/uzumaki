@@ -35,7 +35,7 @@ export default function OrganizationList (props: Props) {
                 className="btn btn-link"
                 to={r.newProjectPath(org.id)}
               >
-                Add a new Project
+                + Add a new Project
               </Link>
             </div>
           </header>
@@ -53,7 +53,7 @@ export default function OrganizationList (props: Props) {
       ))}
 
       <div className="py-5 d-flex justify-content-center">
-        <Link to="/organizations/new" className="btn btn-link">Add a new organization</Link>
+        <Link to="/organizations/new" className="btn btn-link">+ Add a new organization</Link>
       </div>
     </div>
   )

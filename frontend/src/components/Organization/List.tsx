@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 
 import { OrganizationT } from '@/types/index.d'
 import * as r from '@/helpers/Route'
+import ProjectCard from '@/components/Project/Card'
 
 interface Props {
   organizations: [OrganizationT]
@@ -12,37 +13,37 @@ interface Props {
 export default function OrganizationList (props: Props) {
   return (
     <div>
+      <small className="d-block pb-4 text-uppercase text-secondary">Organizations</small>
       {props.organizations.map(org => (
-        <div key={org.id}>
-          <h2 className="h5">{org.name}</h2>
-          <p>{org.description || 'no description'}</p>
-          <Link
-            className="btn btn-primary"
-            to={r.newProjectPath(org.id)}
-          >
-            Add a new Project
-          </Link>
-
-          {chunk(org.projects, 2).map((projects, i) => (
-            <div className="row" key={i}>
-              {projects.map(project => (
-                <div className="card card-default col-6" key={project.id}>
-                  <div className="card-body">
-                    <h3 className="h6">{project.name}</h3>
-                    <p>{project.description || 'no description'}</p>
-                    <Link
-                      className="btn btn-primary"
-                      to={r.editProjectPath(org.id, project.id)}
-                    >
-                      Edit
-                    </Link>
-                  </div>
-                </div>
-              ))}
+        <section key={org.id}>
+          <header className="d-flex justify-content-between">
+            <div>
+              <h2 className="h5">{org.name}</h2>
+              <p className="text-secondary">{org.description || 'No description'}</p>
             </div>
-          ))}
-        </div>
+            <div>
+              <Link
+                className="btn btn-outline-primary"
+                to={r.newProjectPath(org.id)}
+              >
+                Add a new Project
+              </Link>
+            </div>
+          </header>
+
+          <div className="row">
+            {org.projects.map(project => (
+              <div className="col-md-6 col-lg-4 mb-4">
+                <ProjectCard project={project} organizationId={org.id} />
+              </div>
+            ))}
+          </div>
+        </section>
       ))}
+
+      <div className="py-5 d-flex justify-content-center">
+        <Link to="/organizations/new" className="btn btn-link">Add a new organization</Link>
+      </div>
     </div>
   )
 }

@@ -5,5 +5,5 @@ type Props = {
 }
 
 export default function MainContainer (props: Props) {
-  return <main className="container pt-3">{props.children}</main>
+  return <main className="container pt-4">{props.children}</main>
 }

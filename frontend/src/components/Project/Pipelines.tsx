@@ -16,11 +16,12 @@ const Wrapper = styled.div`
 const minPWidth = 375
 
 type Props = {
-  stories: Array<StoryT>,
+  project: ProjectT,
+  stories: StoryT[],
 }
 
 export default function Pipelines (props: Props) {
-  console.log(props.stories)
+  console.log(props.project)
   return (
     <Wrapper>
       <Pipeline width={minPWidth} type={PipelineType.Current}>

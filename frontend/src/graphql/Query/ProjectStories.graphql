@@ -1,0 +1,27 @@
+query ProjectStories($id: ID!) {
+  project(id: $id) {
+    id
+    name
+    description
+    startIterationsOn
+    iterationLength
+    velocity
+    createdAt
+    updatedAt
+
+    stories {
+      id
+      title
+      description
+      state
+      type
+      points
+      requester {
+        id
+        name
+      }
+      createdAt
+      updatedAt
+    }
+  }
+}

@@ -1,0 +1,16 @@
+query Stories($projectId: ID!) {
+  stories(projectId: $projectId) {
+    id
+    title
+    description
+    state
+    type
+    points
+    requester {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+  }
+}

@@ -1,10 +1,15 @@
 import { FormikProps } from 'formik'
+import { StoryState, StoryType } from '@/models/Story'
 
 declare global {
   export type ID = number
 
   type UserT = {
     id: ID,
+    name: string,
+  }
+  type UserPayloadT = {
+    id: string,
     name: string,
   }
 
@@ -43,6 +48,29 @@ declare global {
   }
   type UpdateProjectPayload = {
     updateProject: ProjectT
+  }
+
+  type StoryT = {
+    id: ID,
+    title: string,
+    description?: string | null,
+    state: StoryState,
+    type: StoryType,
+    points: number,
+    requester: UserT,
+    createdAt: Date,
+    updatedAt: Date,
+  }
+  type StoryPayloadT = {
+    id: string,
+    title: sting
+    description: string | null,
+    state: string,
+    type: string,
+    points: number,
+    requester: UserPayloadT,
+    createdAt: string,
+    updatedAt: string,
   }
 
   type RouteMatch = {

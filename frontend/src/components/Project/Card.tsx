@@ -13,7 +13,14 @@ export default function Card (props: Props) {
   return (
     <div className="card card-default" key={project.id}>
       <div className="card-body">
-        <h3 className="h6">{project.name}</h3>
+        <h3 className="h6">
+          <Link
+            className="text-dark"
+            to={r.showProjectPath(organizationId, project.id)}
+          >
+            {project.name}
+          </Link>
+        </h3>
         <p className="text-secondary">{project.description || 'no description'}</p>
         <div className="d-flex justify-content-end">
           <Link

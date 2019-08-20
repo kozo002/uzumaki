@@ -16,6 +16,7 @@ import Login from '@/pages/Login'
 import Logout from '@/pages/Logout'
 import OrganizationNew from '@/pages/Organizations/New'
 import OrganizationEdit from '@/pages/Organizations/Edit'
+import ProjectShow from '@/pages/Organizations/Projects/Show'
 import ProjectNew from '@/pages/Organizations/Projects/New'
 import ProjectEdit from '@/pages/Organizations/Projects/Edit'
 
@@ -38,6 +39,7 @@ function App () {
               <Route exact path="/organizations" component={Organizations} />
               <Route path="/organizations/new" component={OrganizationNew} />
               <Route path="/organizations/:organizationId/edit" component={OrganizationEdit} />
+              <Route path="/organizations/:organizationId/projects/:projectId" component={ProjectShow} />
               <Route path="/organizations/:organizationId/projects/new" component={ProjectNew} />
               <Route path="/organizations/:organizationId/projects/:projectId/edit" component={ProjectEdit} />
               <Route path="/logout" component={Logout} />

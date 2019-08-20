@@ -1,5 +1,6 @@
 import { FormikProps } from 'formik'
 import { StoryState, StoryType } from '@/models/Story'
+import { Day } from '@/models/Project'
 
 declare global {
   export type ID = number
@@ -36,6 +37,21 @@ declare global {
     id: ID,
     name: string,
     description?: string | null,
+    startIterationsOn: Day,
+    iterationLength: number,
+    velocity: number,
+    createdAt: Date,
+    updatedAt: Date,
+  }
+  type ProjectPayloadT = {
+    id: string,
+    name: string,
+    description: string | null,
+    startIterationsOn: string,
+    iterationLength: number,
+    velocity: number,
+    createdAt: string,
+    updatedAt: string,
   }
   type ProjectInputT = {
     id?: number,
@@ -44,10 +60,10 @@ declare global {
   }
   type ProjectFormikPropsT = FormikProps<ProjectInputT>
   type CreateProjectPayload = {
-    createProject: ProjectT
+    createProject: ProjectPayloadT
   }
   type UpdateProjectPayload = {
-    updateProject: ProjectT
+    updateProject: ProjectPayloadT
   }
 
   type StoryT = {

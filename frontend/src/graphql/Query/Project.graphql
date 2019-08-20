@@ -3,5 +3,8 @@ query Project($id: ID!) {
     id
     name
     description
+    startIterationsOn
+    iterationLength
+    velocity
   }
 }

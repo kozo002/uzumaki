@@ -5,6 +5,19 @@ type Project {
   organizations: [Organization]!
   users: [User]!
   stories: [Story]!
+  startIterationsOn: Day!
+  iterationLength: Int!
+  velocity: Int!
   createdAt: Date
   updatedAt: Date
+}
+
+enum Day {
+  MON
+  TUE
+  WED
+  THU
+  FRI
+  SAT
+  SUN
 }

@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/react-hooks'
 const meQuery = require('@/graphql/Query/Me.graphql')
 
 type Props = {
-  render: (user: UserT) => React.ReactElement,
+  children: (user: UserT) => React.ReactElement,
 }
 
 export default function CurrentUser (props: Props) {
@@ -12,5 +12,5 @@ export default function CurrentUser (props: Props) {
   if (loading) { return null }
   if (error) { console.error(error); return null }
   if (!data.me) { console.error('Cannot found current user'); return null }
-  return props.render(data.me)
+  return props.children(data.me)
 }

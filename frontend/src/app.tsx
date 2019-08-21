@@ -31,9 +31,9 @@ function App () {
           <Route path="/loggedIn" component={LoggedIn} />
           <Route path="/login" component={Login} />
           <Auth>
-            <CurrentUserContainer
-              render={(user: UserT) => <Header user={user} />}
-            />
+            <CurrentUserContainer>
+              {user => <Header user={user} />}
+            </CurrentUserContainer>
             <Switch>
               <Route exact path="/" render={() => <Redirect to="/organizations" />} />
               <Route exact path="/organizations" component={Organizations} />

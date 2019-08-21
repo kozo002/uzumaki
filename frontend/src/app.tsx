@@ -39,8 +39,8 @@ function App () {
               <Route exact path="/organizations" component={Organizations} />
               <Route path="/organizations/new" component={OrganizationNew} />
               <Route path="/organizations/:organizationId/edit" component={OrganizationEdit} />
-              <Route path="/organizations/:organizationId/projects/:projectId" component={ProjectShow} />
               <Route path="/organizations/:organizationId/projects/new" component={ProjectNew} />
+              <Route path="/organizations/:organizationId/projects/:projectId" component={ProjectShow} />
               <Route path="/organizations/:organizationId/projects/:projectId/edit" component={ProjectEdit} />
               <Route path="/logout" component={Logout} />
             </Switch>

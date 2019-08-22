@@ -1,9 +1,12 @@
 import { FormikProps } from 'formik'
 import { StoryState, StoryType } from '@/models/Story'
 import { Day } from '@/models/Project'
+import { reducers } from '@/store'
 
 declare global {
   export type ID = number
+
+  type AppStateT = ReturnType<typeof reducers>
 
   type UserT = {
     id: ID,

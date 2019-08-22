@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import classnames from 'classnames'
 import styled from 'styled-components'
+import { useSelector } from 'react-redux'
 
 type Props = {
   user: UserT,
@@ -18,6 +19,7 @@ const Cover = styled.div`
 
 export default function Header (props: Props) {
   const [isDropdownOpened, setDropdownOpened] = React.useState(false)
+  const title = useSelector<AppStateT, string>((state: AppStateT) => state.title.headerTitle)
 
   function handleDropdownButtonClick (e: React.MouseEvent) {
     e.preventDefault()
@@ -36,7 +38,10 @@ export default function Header (props: Props) {
 
   return (
     <div className="navbar navbar-light bg-light">
-      <Link to="/" className="navbar-brand">🌀Uzumaki</Link>
+      <div>
+        <Link to="/" className="navbar-brand">🌀Uzumaki</Link>
+        {title}
+      </div>
 
       <nav>
         <ul className="navbar-nav">

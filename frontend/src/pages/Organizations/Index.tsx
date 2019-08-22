@@ -7,7 +7,7 @@ import MainContainer from '@/components/MainContainer'
 import { setTitle } from '@/store/modules/title'
 const OrganizationsQuery = require('@/graphql/Query/Organizations.graphql')
 
-export default function Organizations () {
+export default function Index () {
   const { loading, error, data } = useQuery(OrganizationsQuery)
   const dispatch = useDispatch()
 

@@ -11,10 +11,10 @@ import client from '@/graphql/client'
 
 import Auth from '@/containers/Auth'
 
-import Organizations from '@/pages/Organizations'
 import LoggedIn from '@/pages/LoggedIn'
 import Login from '@/pages/Login'
 import Logout from '@/pages/Logout'
+import Organizations from '@/pages/Organizations/Index'
 import OrganizationNew from '@/pages/Organizations/New'
 import OrganizationEdit from '@/pages/Organizations/Edit'
 import ProjectShow from '@/pages/Organizations/Projects/Show'

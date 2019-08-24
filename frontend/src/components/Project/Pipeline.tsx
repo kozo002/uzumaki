@@ -18,6 +18,7 @@ const Header = styled.header.attrs({
   className: 'text-uppercase',
 })`
   padding: 16px 0;
+  font-weight: bold;
 `
 
 export enum PipelineType {

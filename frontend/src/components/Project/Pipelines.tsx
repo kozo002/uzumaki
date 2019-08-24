@@ -3,7 +3,8 @@ import styled from 'styled-components'
 
 import Pipeline, { PipelineType } from '@/components/Project/Pipeline'
 import StoryCard from '@/components/Story/Card'
-// import { StoryState, StoryType } from '@/models/Story'
+import { formatDate } from '@/helpers/Date'
+import { calcIteration } from '@common/helpers/Iteration'
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,9 +23,17 @@ type Props = {
 
 export default function Pipelines (props: Props) {
   console.log(props.project)
+  const { project } = props
+  const { startDay, endDay, iterationsCount } = calcIteration(project)
+
   return (
     <Wrapper>
       <Pipeline width={minPWidth} type={PipelineType.Current}>
+        <p className="font-weight-bold text-secondary">
+          {formatDate(startDay)} - {formatDate(endDay)}
+          &nbsp;&nbsp;
+          ITERATION {iterationsCount}
+        </p>
         {props.stories.map(story => (
           <StoryCard key={story.id} story={story} />
         ))}

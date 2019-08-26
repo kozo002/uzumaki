@@ -77,6 +77,7 @@ declare global {
     type: StoryType,
     points: number,
     requester: UserT,
+    inIcebox: boolean,
     createdAt: Date,
     updatedAt: Date,
   }
@@ -88,6 +89,7 @@ declare global {
     type: string,
     points: number,
     requester: UserPayloadT,
+    inIcebox: boolean,
     createdAt: string,
     updatedAt: string,
   }

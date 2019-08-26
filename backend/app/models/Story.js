@@ -53,6 +53,13 @@ module.exports = (sequelize, DataTypes) => {
         notNull: true,
       }
     },
+    inIcebox: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
+    },
     projectId: {
       type: DataTypes.INTEGER,
       allowNull: false,

@@ -7,6 +7,7 @@ type Story {
   points: Int
   requester: User
   project: Project!
+  inIcebox: Boolean
   createdAt: Date
   updatedAt: Date
 }
@@ -34,4 +35,5 @@ input StoryInput {
   type: StoryType!
   points: Int
   requesterId: Int
+  inIcebox: Boolean
 }

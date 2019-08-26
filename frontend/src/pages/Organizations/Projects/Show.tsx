@@ -8,6 +8,7 @@ import AlertError from '@/components/AlertError'
 import { convert as convertProject } from '@/models/Project'
 import { convert as convertStory } from '@/models/Story'
 import { setTitle } from '@/store/modules/title'
+import { calcIteration } from '@common/helpers/Iteration'
 const projectStoriesQuery = require('@/graphql/Query/ProjectStories.graphql')
 
 type Props = {
@@ -24,7 +25,7 @@ export default function Show (props: Props) {
   })
 
   React.useEffect(() => {
-    if (data.project) {
+    if (data && data.project) {
       const { name } = data.project
       dispatch(setTitle({ windowTitle: name, headerTitle: name }))
     }
@@ -44,8 +45,15 @@ export default function Show (props: Props) {
 
   const project: ProjectT = convertProject(data.project)
   const stories: StoryT[] = data.project.stories.map(convertStory)
+  const { startDay, endDay, iterationsCount } = calcIteration(project)
 
   return (
-    <Pipelines project={project} stories={stories} />
+    <Pipelines
+      project={project}
+      stories={stories}
+      startDay={startDay}
+      endDay={endDay}
+      iterationsCount={iterationsCount}
+    />
   )
 }

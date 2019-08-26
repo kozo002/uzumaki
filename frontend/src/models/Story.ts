@@ -1,4 +1,5 @@
 import { convert as convertUser } from '@/models/User'
+import { array } from 'prop-types';
 
 export enum StoryState {
   UNSTARTED = 'unstarted',
@@ -24,6 +25,20 @@ export namespace StoryState {
   export function convert (value: string): StoryState {
     const index = Object.keys(StoryState).indexOf(value)
     return StoryState.toArray()[index]
+  }
+
+  export function extractCurrentIteration (stories: StoryT[]): StoryT[] {
+    const array = StoryState.toArray()
+    return stories.filter(it => array.indexOf(it.state) > 1)
+  }
+
+  export function extractBacklog (stories: StoryT[]): StoryT[] {
+    const array = StoryState.toArray()
+    return stories.filter(it => array.indexOf(it.state) <= 1)
+  }
+
+  export function extractIcebox (stories: StoryT[]): StoryT[] {
+    return stories.filter(it => it.inIcebox)
   }
 }
 
@@ -68,6 +83,7 @@ export function convert (data: StoryPayloadT): StoryT {
     type: StoryType.convert(data.type),
     points: data.points,
     requester: convertUser(data.requester),
+    inIcebox: data.inIcebox,
     createdAt: new Date(data.createdAt),
     updatedAt: new Date(data.updatedAt),
   } as StoryT

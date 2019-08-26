@@ -37,6 +37,7 @@ export default function Card (props: Props) {
         <Title>{story.title}</Title>
         <div>
           <TypeIcon type={story.type} />
+          {story.state}
         </div>
       </Body>
     </Wrapper>

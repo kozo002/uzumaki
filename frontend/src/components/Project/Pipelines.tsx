@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Pipeline, { PipelineType } from '@/components/Project/Pipeline'
 import StoryCard from '@/components/Story/Card'
 import { formatDate } from '@/helpers/Date'
-import { calcIteration } from '@common/helpers/Iteration'
+import { StoryState } from '@/models/Story'
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,12 +19,18 @@ const minPWidth = 375
 type Props = {
   project: ProjectT,
   stories: StoryT[],
+  startDay: Date,
+  endDay: Date,
+  iterationsCount: number,
 }
 
 export default function Pipelines (props: Props) {
   console.log(props.project)
-  const { project } = props
-  const { startDay, endDay, iterationsCount } = calcIteration(project)
+  const { project, startDay, endDay, iterationsCount, stories } = props
+
+  const currentStories = StoryState.extractCurrentIteration(stories)
+  const backlogStories = StoryState.extractBacklog(stories)
+  const iceboxStories = StoryState.extractIcebox(stories)
 
   return (
     <Wrapper>
@@ -34,12 +40,20 @@ export default function Pipelines (props: Props) {
           &nbsp;&nbsp;
           ITERATION {iterationsCount}
         </p>
-        {props.stories.map(story => (
+        {currentStories.map(story => (
           <StoryCard key={story.id} story={story} />
         ))}
       </Pipeline>
-      <Pipeline width={minPWidth} type={PipelineType.Backlog}></Pipeline>
-      <Pipeline width={minPWidth} type={PipelineType.Icebox}></Pipeline>
+      <Pipeline width={minPWidth} type={PipelineType.Backlog}>
+        {backlogStories.map(story => (
+          <StoryCard key={story.id} story={story} />
+        ))}
+      </Pipeline>
+      <Pipeline width={minPWidth} type={PipelineType.Icebox}>
+        {iceboxStories.map(story => (
+          <StoryCard key={story.id} story={story} />
+        ))}
+      </Pipeline>
     </Wrapper>
   )
 }

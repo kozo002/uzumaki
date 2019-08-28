@@ -8,7 +8,7 @@ import AlertError from '@/components/AlertError'
 import { convert as convertProject } from '@/models/Project'
 import Story from '@/models/Story'
 import { setTitle } from '@/store/modules/title'
-import { calcIteration } from '@common/helpers/Iteration'
+import { calcIteration } from '@/helpers/Iteration'
 const projectStoriesQuery = require('@/graphql/Query/ProjectStories.graphql')
 
 type Props = {

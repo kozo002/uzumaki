@@ -2,13 +2,11 @@
   "compilerOptions": {
     "rootDir": "../../",
     "outDir": "./frontend/dist/",
-    "typeRoots": ["./common/types"],
+    "typeRoots": ["./frontend/src/types"],
     "baseUrl": "./frontend",
     "paths": {
       "@/*": ["src/*"],
-      "@": ["src"],
-      "@common/*": ["../common/*"],
-      "@common": ["../common"]
+      "@": ["src"]
     },
     "noImplicitAny": true,
     "sourceMap": true,
@@ -20,5 +18,5 @@
     "esModuleInterop": true,
     "moduleResolution": "node"
   },
-  "include": ["../src/**/*", "../../common/**/*"]
+  "include": ["../src/**/*"]
 }

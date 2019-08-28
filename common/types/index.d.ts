@@ -78,6 +78,7 @@ declare global {
     points: number,
     requester: UserT,
     inIcebox: boolean,
+    prevId: number | null,
     createdAt: Date,
     updatedAt: Date,
   }
@@ -90,6 +91,7 @@ declare global {
     points: number,
     requester: UserPayloadT,
     inIcebox: boolean,
+    prevId: number | null,
     createdAt: string,
     updatedAt: string,
   }

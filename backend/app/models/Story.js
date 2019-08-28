@@ -67,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
         notNull: true,
       }
     },
-    nextId: {
+    prevId: {
       type: DataTypes.INTEGER,
     }
   }, {});

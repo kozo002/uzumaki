@@ -4,7 +4,8 @@ import styled from 'styled-components'
 import Pipeline, { PipelineType } from '@/components/Project/Pipeline'
 import StoryCard from '@/components/Story/Card'
 import { formatDate } from '@/helpers/Date'
-import { StoryState, splitBacklog, SplitBacklogOptionsI } from '@/models/Story'
+import Story, { StoryState } from '@/models/Story'
+import StoryCollection, { IterationStoriesOptionsI } from '@/models/StoryCollection'
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,25 +39,25 @@ export default function Pipelines (props: Props) {
   console.log(props.project)
   const { project, startDay, endDay, iterationsCount, stories } = props
 
-  const currentStories = StoryState.extractCurrentIteration(stories)
-  const backlogStories = StoryState.extractBacklog(stories)
-  const iceboxStories = StoryState.extractIcebox(stories)
-  const splitBacklogStories = splitBacklog(backlogStories, {
+  const current = new StoryCollection(StoryState.extractCurrentIteration(stories))
+  const backlog = new StoryCollection(StoryState.extractBacklog(stories))
+  const icebox = new StoryCollection(StoryState.extractIcebox(stories))
+  const iterationStories = backlog.iterationStories({
     currentIteration: { startDay, endDay },
     iterationsLength: project.iterationLength,
     velocity: project.velocity,
-  } as SplitBacklogOptionsI)
+  } as IterationStoriesOptionsI)
 
   return (
     <Wrapper>
       <Pipeline width={minPWidth} type={PipelineType.Current}>
         <IterationHeader start={startDay} end={endDay} count={iterationsCount} />
-        {currentStories.map(story => (
+        {current.stories.map(story => (
           <StoryCard key={story.id} story={story} />
         ))}
       </Pipeline>
       <Pipeline width={minPWidth} type={PipelineType.Backlog}>
-        {splitBacklogStories.map((iteration, i) => (
+        {iterationStories.map((iteration, i) => (
           <React.Fragment key={i}>
             <IterationHeader
               start={iteration.startDay}
@@ -70,7 +71,7 @@ export default function Pipelines (props: Props) {
         ))}
       </Pipeline>
       <Pipeline width={minPWidth} type={PipelineType.Icebox}>
-        {iceboxStories.map(story => (
+        {icebox.stories.map(story => (
           <StoryCard key={story.id} story={story} />
         ))}
       </Pipeline>

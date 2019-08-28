@@ -1,4 +1,3 @@
-import addDays from 'date-fns/addDays'
 import { convert as convertUser } from '@/models/User'
 
 export enum StoryState {
@@ -34,7 +33,9 @@ export namespace StoryState {
 
   export function extractBacklog (stories: StoryT[]): StoryT[] {
     const array = StoryState.toArray()
-    return stories.filter(it => array.indexOf(it.state) <= 1)
+    return stories.filter(it => 
+      array.indexOf(it.state) <= 1 && !it.inIcebox
+    )
   }
 
   export function extractIcebox (stories: StoryT[]): StoryT[] {
@@ -84,52 +85,34 @@ export function convert (data: StoryPayloadT): StoryT {
     points: data.points,
     requester: convertUser(data.requester),
     inIcebox: data.inIcebox,
+    prevId: data.prevId,
     createdAt: new Date(data.createdAt),
     updatedAt: new Date(data.updatedAt),
   } as StoryT
 }
 
-export interface SplitBacklogOptionsI {
-  currentIteration: {
-    startDay: Date
-    endDay: Date
+export default class Story {
+  object: StoryT
+
+  constructor (data: StoryPayloadT) {
+    this.object = {
+      id: parseInt(data.id),
+      title: data.title,
+      description: data.description,
+      state: StoryState.convert(data.state),
+      type: StoryType.convert(data.type),
+      points: data.points,
+      requester: convertUser(data.requester),
+      inIcebox: data.inIcebox,
+      prevId: data.prevId,
+      createdAt: new Date(data.createdAt),
+      updatedAt: new Date(data.updatedAt),
+    } as StoryT
+
+    Object.keys(this.object).forEach(key => {
+      Object.defineProperty(this, key, {
+        get () { return this.object[key] }
+      })
+    })
   }
-  iterationsLength: number
-  velocity: number,
-}
-export interface SplitBacklogResultI {
-  startDay: Date | null
-  endDay: Date | null
-  stories: StoryT[]
-}
-export function splitBacklog (stories: StoryT[], options: SplitBacklogOptionsI): SplitBacklogResultI[] {
-  const { currentIteration, iterationsLength, velocity } = options
-  const firstStartDay = addDays(currentIteration.endDay, 1)
-
-  const splitStories = stories.reduce((acc, story) => {
-    const lastBlock = acc.length === 0 ? [] : acc[acc.length - 1]
-    const totalPoints = lastBlock.reduce((acc, it) => acc + (it.points || 0), 0) + story.points
-    if (totalPoints > velocity) {
-      acc.push([story])
-    } else {
-      lastBlock.push(story)
-      if (acc.length === 0) {
-        acc[0] = lastBlock
-      } else {
-        acc[acc.length - 1] = lastBlock
-      }
-    }
-    return acc
-  }, [] as Array<StoryT[]>)
-
-  return splitStories.map((stories, i) => {
-    const startDay = addDays(firstStartDay, iterationsLength * 7 * i)
-    const endDay = addDays(startDay, iterationsLength * 7 - 1)
-    return {
-      startDay,
-      endDay,
-      stories,
-      totalPoints: stories.reduce((acc, it) => acc + it.points, 0)
-    } as SplitBacklogResultI
-  })
 }

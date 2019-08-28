@@ -6,7 +6,7 @@ import Pipelines from '@/components/Project/Pipelines'
 import MainContainer from '@/components/MainContainer'
 import AlertError from '@/components/AlertError'
 import { convert as convertProject } from '@/models/Project'
-import { convert as convertStory } from '@/models/Story'
+import Story, { convert as convertStory } from '@/models/Story'
 import { setTitle } from '@/store/modules/title'
 import { calcIteration } from '@common/helpers/Iteration'
 const projectStoriesQuery = require('@/graphql/Query/ProjectStories.graphql')

@@ -21,6 +21,7 @@ query ProjectStories($id: ID!) {
         name
       }
       inIcebox
+      prevId
       createdAt
       updatedAt
     }

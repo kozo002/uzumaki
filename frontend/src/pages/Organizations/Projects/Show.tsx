@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import Pipelines from '@/components/Project/Pipelines'
 import MainContainer from '@/components/MainContainer'
 import AlertError from '@/components/AlertError'
-import { convert as convertProject } from '@/models/Project'
+import Project from '@/models/Project'
 import Story from '@/models/Story'
 import { setTitle } from '@/store/modules/title'
 import { calcIteration } from '@/helpers/Iteration'
@@ -43,7 +43,7 @@ export default function Show (props: Props) {
     )
   }
 
-  const project: ProjectT = convertProject(data.project)
+  const project: Project = new Project(data.project)
   const stories: Story[] = data.project.stories.map((it: StoryPayloadT) => new Story(it))
   const { startDay, endDay, iterationsCount } = calcIteration(project)
 

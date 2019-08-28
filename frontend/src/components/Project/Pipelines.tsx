@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Pipeline, { PipelineType } from '@/components/Project/Pipeline'
 import StoryCard from '@/components/Story/Card'
 import { formatDate } from '@/helpers/Date'
+import Project from '@/models/Project'
 import Story from '@/models/Story'
 import StoryCollection, { IterationStoriesOptionsI } from '@/models/StoryCollection'
 
@@ -18,7 +19,7 @@ const Wrapper = styled.div`
 const minPWidth = 375
 
 type Props = {
-  project: ProjectT,
+  project: Project,
   stories: Story[],
   startDay: Date,
   endDay: Date,

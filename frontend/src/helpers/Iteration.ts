@@ -2,7 +2,7 @@ import startOfWeek from 'date-fns/startOfWeek'
 import addDays from 'date-fns/addDays'
 import subDays from 'date-fns/subDays'
 
-import { Day } from '@/models/Project'
+import Day from '@/models/Day'
 
 interface IterationDataI {
   startDay: Date

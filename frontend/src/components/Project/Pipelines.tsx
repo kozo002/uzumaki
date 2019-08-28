@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
-  background: #f0f0f7;
+  background: #f6f6fb;
 `
 
 const minPWidth = 375
@@ -54,7 +54,7 @@ export default function Pipelines (props: Props) {
       <Pipeline width={minPWidth} type={PipelineType.Current}>
         <IterationHeader start={startDay} end={endDay} count={iterationsCount} />
         {current.stories.map(story => (
-          <StoryCard key={story.id} story={story} />
+          <StoryCard key={story.id} story={story} current />
         ))}
       </Pipeline>
       <Pipeline width={minPWidth} type={PipelineType.Backlog}>
@@ -73,7 +73,7 @@ export default function Pipelines (props: Props) {
       </Pipeline>
       <Pipeline width={minPWidth} type={PipelineType.Icebox}>
         {icebox.stories.map(story => (
-          <StoryCard key={story.id} story={story} />
+          <StoryCard key={story.id} story={story} icebox />
         ))}
       </Pipeline>
     </Wrapper>

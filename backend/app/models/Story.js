@@ -67,6 +67,9 @@ module.exports = (sequelize, DataTypes) => {
         notNull: true,
       }
     },
+    nextId: {
+      type: DataTypes.INTEGER,
+    }
   }, {});
 
   Story.associate = function(models) {

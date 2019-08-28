@@ -37,7 +37,8 @@ export default function Card (props: Props) {
         <Title>{story.title}</Title>
         <div>
           <TypeIcon type={story.type} />
-          {story.state}
+          {story.state}/{story.points}
+          <span className="badge badge-secondary">{story.id}</span>
         </div>
       </Body>
     </Wrapper>

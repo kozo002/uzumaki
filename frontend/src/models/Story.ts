@@ -1,5 +1,5 @@
+import addDays from 'date-fns/addDays'
 import { convert as convertUser } from '@/models/User'
-import { array } from 'prop-types';
 
 export enum StoryState {
   UNSTARTED = 'unstarted',
@@ -87,4 +87,49 @@ export function convert (data: StoryPayloadT): StoryT {
     createdAt: new Date(data.createdAt),
     updatedAt: new Date(data.updatedAt),
   } as StoryT
+}
+
+export interface SplitBacklogOptionsI {
+  currentIteration: {
+    startDay: Date
+    endDay: Date
+  }
+  iterationsLength: number
+  velocity: number,
+}
+export interface SplitBacklogResultI {
+  startDay: Date | null
+  endDay: Date | null
+  stories: StoryT[]
+}
+export function splitBacklog (stories: StoryT[], options: SplitBacklogOptionsI): SplitBacklogResultI[] {
+  const { currentIteration, iterationsLength, velocity } = options
+  const firstStartDay = addDays(currentIteration.endDay, 1)
+
+  const splitStories = stories.reduce((acc, story) => {
+    const lastBlock = acc.length === 0 ? [] : acc[acc.length - 1]
+    const totalPoints = lastBlock.reduce((acc, it) => acc + (it.points || 0), 0) + story.points
+    if (totalPoints > velocity) {
+      acc.push([story])
+    } else {
+      lastBlock.push(story)
+      if (acc.length === 0) {
+        acc[0] = lastBlock
+      } else {
+        acc[acc.length - 1] = lastBlock
+      }
+    }
+    return acc
+  }, [] as Array<StoryT[]>)
+
+  return splitStories.map((stories, i) => {
+    const startDay = addDays(firstStartDay, iterationsLength * 7 * i)
+    const endDay = addDays(startDay, iterationsLength * 7 - 1)
+    return {
+      startDay,
+      endDay,
+      stories,
+      totalPoints: stories.reduce((acc, it) => acc + it.points, 0)
+    } as SplitBacklogResultI
+  })
 }

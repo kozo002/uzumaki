@@ -2,6 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 import TypeIcon from '@/components/Story/TypeIcon'
+import Story from '@/models/Story'
 
 const Wrapper = styled.article.attrs({
   className: 'card card-default',
@@ -26,7 +27,7 @@ const Title = styled.h1.attrs({
 `
 
 type Props = {
-  story: StoryT,
+  story: Story,
 }
 
 export default function Card (props: Props) {  

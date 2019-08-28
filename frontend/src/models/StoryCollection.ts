@@ -1,6 +1,9 @@
 import inRange from 'lodash/inRange'
 import addDays from 'date-fns/addDays'
 
+import Story from '@/models/Story'
+import StoryState from '@/models/StoryState'
+
 export interface IterationStoriesOptionsI {
   currentIteration: {
     startDay: Date
@@ -12,22 +15,41 @@ export interface IterationStoriesOptionsI {
 export interface IterationStoriesI {
   startDay: Date | null
   endDay: Date | null
-  stories: StoryT[]
+  stories: Story[]
 }
 
 export default class StoryCollection {
-  stories: StoryT[]
+  stories: Story[]
   private __iterationStories: IterationStoriesI[]
 
-  constructor (stories: StoryT[]) {
+  static extractCurrentIteration (stories: Story[]): StoryCollection {
+    const array = StoryState.toArray()
+    const filtered = stories.filter(it => array.indexOf(it.state) > 1)
+    return new StoryCollection(filtered)
+  }
+
+  static extractBacklog (stories: Story[]): StoryCollection {
+    const array = StoryState.toArray()
+    const filtered = stories.filter(it => 
+      array.indexOf(it.state) <= 1 && !it.inIcebox
+    )
+    return new StoryCollection(filtered)
+  }
+
+  static extractIcebox (stories: Story[]): StoryCollection {
+    const filtered = stories.filter(it => it.inIcebox)
+    return new StoryCollection(filtered)
+  }
+
+  constructor (stories: Story[]) {
     this.stories = this.sortByPrevId(stories)
     this.__iterationStories = null
   }
 
-  private sortByPrevId (stories: StoryT[]) {
+  private sortByPrevId (stories: Story[]) {
     if (stories.length < 2) { return stories }
 
-    function binarySearch (targetId: number, stories: StoryT[]): StoryT {
+    function binarySearch (targetId: number, stories: Story[]): Story {
       if (stories.length === 1) { return stories[0] }
       const middle = Math.floor(stories.length / 2)
       const left = stories.slice(0, middle)
@@ -73,7 +95,7 @@ export default class StoryCollection {
         }
       }
       return acc
-    }, [] as Array<StoryT[]>)
+    }, [] as Array<Story[]>)
 
     this.__iterationStories = splitStories.map((stories, i) => {
       const startDay = addDays(firstStartDay, iterationsLength * 7 * i)

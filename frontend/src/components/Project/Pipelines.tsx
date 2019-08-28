@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Pipeline, { PipelineType } from '@/components/Project/Pipeline'
 import StoryCard from '@/components/Story/Card'
 import { formatDate } from '@/helpers/Date'
-import Story, { StoryState } from '@/models/Story'
+import Story from '@/models/Story'
 import StoryCollection, { IterationStoriesOptionsI } from '@/models/StoryCollection'
 
 const Wrapper = styled.div`
@@ -19,7 +19,7 @@ const minPWidth = 375
 
 type Props = {
   project: ProjectT,
-  stories: StoryT[],
+  stories: Story[],
   startDay: Date,
   endDay: Date,
   iterationsCount: number,
@@ -39,9 +39,9 @@ export default function Pipelines (props: Props) {
   console.log(props.project)
   const { project, startDay, endDay, iterationsCount, stories } = props
 
-  const current = new StoryCollection(StoryState.extractCurrentIteration(stories))
-  const backlog = new StoryCollection(StoryState.extractBacklog(stories))
-  const icebox = new StoryCollection(StoryState.extractIcebox(stories))
+  const current = StoryCollection.extractCurrentIteration(stories)
+  const backlog = StoryCollection.extractBacklog(stories)
+  const icebox = StoryCollection.extractIcebox(stories)
   const iterationStories = backlog.iterationStories({
     currentIteration: { startDay, endDay },
     iterationsLength: project.iterationLength,

@@ -6,7 +6,7 @@ import Pipelines from '@/components/Project/Pipelines'
 import MainContainer from '@/components/MainContainer'
 import AlertError from '@/components/AlertError'
 import { convert as convertProject } from '@/models/Project'
-import Story, { convert as convertStory } from '@/models/Story'
+import Story from '@/models/Story'
 import { setTitle } from '@/store/modules/title'
 import { calcIteration } from '@common/helpers/Iteration'
 const projectStoriesQuery = require('@/graphql/Query/ProjectStories.graphql')
@@ -44,7 +44,7 @@ export default function Show (props: Props) {
   }
 
   const project: ProjectT = convertProject(data.project)
-  const stories: StoryT[] = data.project.stories.map(convertStory)
+  const stories: Story[] = data.project.stories.map((it: StoryPayloadT) => new Story(it))
   const { startDay, endDay, iterationsCount } = calcIteration(project)
 
   return (

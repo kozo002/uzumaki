@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { StoryType } from '@/models/Story'
+import StoryType from '@/models/StoryType'
 
 const Colors = {
   [StoryType.FEATURE]: 'rgb(255, 219, 62)',

@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 import { useDispatch } from 'react-redux'
+import sortBy from 'lodash/sortBy'
 
 import Pipelines from '@/components/Project/Pipelines'
 import MainContainer from '@/components/MainContainer'
@@ -10,6 +11,8 @@ import Story from '@/models/Story'
 import { setTitle } from '@/store/modules/title'
 import { calcIteration } from '@/helpers/Iteration'
 const projectStoriesQuery = require('@/graphql/Query/ProjectStories.graphql')
+const updateStoriesMutation = require('@/graphql/Mutation/updateStories.graphql')
+console.log(updateStoriesMutation)
 
 type Props = {
   match: RouteMatch,
@@ -19,10 +22,22 @@ export default function Show (props: Props) {
   const organizationId = parseInt(props.match.params.organizationId)
   const projectId = parseInt(props.match.params.projectId)
   const dispatch = useDispatch()
-
   const { loading, error, data } = useQuery(projectStoriesQuery, {
     variables: { id: projectId }
   })
+  const [updateStories] = useMutation<UpdateStoryPayloadI, StoriesParametersI>(updateStoriesMutation)
+
+  async function handleStoriesUpdate (stories: Story[], inputs: StoryInputI[]) {
+    try {
+      await updateStories({ variables: {
+        projectId,
+        ids: stories.map(it => it.id),
+        inputs
+      } })
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   React.useEffect(() => {
     if (data && data.project) {
@@ -44,7 +59,8 @@ export default function Show (props: Props) {
   }
 
   const project: Project = new Project(data.project)
-  const stories: Story[] = data.project.stories.map((it: StoryPayloadT) => new Story(it))
+  const stories: Story[] = sortBy(data.project.stories, it => it.prevId)
+    .map((it: StoryPayloadT) => new Story(it))
   const { startDay, endDay, iterationsCount } = calcIteration(project)
 
   return (
@@ -54,6 +70,7 @@ export default function Show (props: Props) {
       startDay={startDay}
       endDay={endDay}
       iterationsCount={iterationsCount}
+      onStoriesUpdate={handleStoriesUpdate}
     />
   )
 }

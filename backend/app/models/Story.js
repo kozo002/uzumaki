@@ -15,12 +15,12 @@ module.exports = (sequelize, DataTypes) => {
     state: {
       type: DataTypes.ENUM,
       values: [
-        'unstarted',
-        'started',
-        'finished',
-        'delivered',
-        'rejected',
-        'accepted',
+        'UNSTARTED',
+        'STARTED',
+        'FINISHED',
+        'DELIVERED',
+        'REJECTED',
+        'ACCEPTED',
       ],
       allowNull: false,
       validate: {
@@ -31,12 +31,12 @@ module.exports = (sequelize, DataTypes) => {
     type: {
       type: DataTypes.ENUM,
       values: [
-        'feature',
-        'bug',
-        'chore',
-        'release',
+        'FEATURE',
+        'BUG',
+        'CHORE',
+        'RELEASE',
       ],
-      defaultValue: 'feature',
+      defaultValue: 'FEATURE',
       allowNull: false,
       validate: {
         notNull: true,

@@ -65,5 +65,6 @@ export default function StateButton (props: Props) {
       )
     case StoryState.ACCEPTED:
       return <>&nbsp;</>
+    default: return null
   }
 }

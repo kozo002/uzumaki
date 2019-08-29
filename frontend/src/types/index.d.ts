@@ -95,6 +95,24 @@ declare global {
     createdAt: string,
     updatedAt: string,
   }
+  interface UpdateStoryPayloadI {
+    updateStory: StoryPayloadT
+  }
+  interface StoriesParametersI {
+    projectId: number
+    ids: number[]
+    inputs: StoryInputI[]
+  }
+  interface StoryInputI {
+    title?: string
+    description?: string
+    state?: string
+    type?: string
+    points?: number
+    requesterId?: number
+    inIcebox?: boolean
+    prevId?: number | null
+  }
 
   type RouteMatch = {
     isExact: boolean,

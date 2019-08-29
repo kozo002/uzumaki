@@ -1,0 +1,19 @@
+
+mutation updateStories($projectId: ID!, $ids: [ID]!, $inputs: [StoryInput]!) {
+  updateStories(projectId: $projectId, ids: $ids, inputs: $inputs) {
+    id
+    title
+    description
+    state
+    type
+    points
+    requester {
+      id
+      name
+    }
+    inIcebox
+    prevId
+    createdAt
+    updatedAt
+  }
+}

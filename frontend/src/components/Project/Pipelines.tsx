@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import uniq from 'lodash/uniq'
 
 import Pipeline, { PipelineType } from '@/components/Project/Pipeline'
 import StoryCard from '@/components/Story/Card'
@@ -19,12 +20,13 @@ const Wrapper = styled.div`
 
 const minPWidth = 375
 
-type Props = {
-  project: Project,
-  stories: Story[],
-  startDay: Date,
-  endDay: Date,
-  iterationsCount: number,
+interface Props {
+  project: Project
+  stories: Story[]
+  startDay: Date
+  endDay: Date
+  iterationsCount: number
+  onStoriesUpdate: (stories: Story[], inputs: StoryInputI[]) => void
 }
 
 function IterationHeader (props: { start: Date, end: Date, count: number, total: number }): React.ReactElement {
@@ -42,9 +44,29 @@ function IterationHeader (props: { start: Date, end: Date, count: number, total:
   )
 }
 
+interface useLoadingStoriesValueI {
+  loadingStoryIds: number[]
+  addLoading: (id: number) => void
+  removeLoading: (id: number) => void
+  checkLoading: (id: number) => boolean
+}
+function useLoadingStories (): useLoadingStoriesValueI {
+  const [loadingStoryIds, setStoryIds] = React.useState<number[]>([])
+  const addLoading = (id: number) => {
+    setStoryIds(uniq([...loadingStoryIds, id]))
+  }
+  const removeLoading = (id: number) => {
+    setStoryIds(loadingStoryIds.filter(it => it !== id))
+  }
+  const checkLoading = (id: number): boolean => {
+    return loadingStoryIds.indexOf(id) > -1
+  }
+  return { loadingStoryIds, addLoading, removeLoading, checkLoading }
+}
+
 export default function Pipelines (props: Props) {
   console.log(props.project)
-  const { project, startDay, endDay, iterationsCount, stories } = props
+  const { project, startDay, endDay, iterationsCount, stories, onStoriesUpdate } = props
 
   const current = StoryCollection.extractCurrentIteration(stories)
   const backlog = StoryCollection.extractBacklog(stories)
@@ -55,18 +77,28 @@ export default function Pipelines (props: Props) {
     velocity: project.velocity,
   } as IterationStoriesOptionsI)
 
-  const [loading, setLoading] = React.useState<{ storyId: number | null }>({ storyId: null })
+  const { addLoading, removeLoading, checkLoading } = useLoadingStories()
 
-  const handleStateChange = (story: Story, state: StoryState) => {
-    console.log({ story, state })
-    setLoading({ storyId: story.id })
-    setTimeout(() => setLoading({ storyId: null }), 1000)
+  const handleStateChange = async (story: Story, state: StoryState) => {
+    addLoading(story.id)
+    let input = { state } as StoryInputI
+    let nextStory
+    if (story.willStart(input)) {
+      input.prevId = current.lastStory.id
+      const prevStory = backlog.findPrevStory(story)
+      nextStory = backlog.findNextStory(story)
+      let nextStoryInput = { prevId: prevStory ? prevStory.id : null }
+      addLoading(nextStory.id)
+      await onStoriesUpdate([story, nextStory], [input, nextStoryInput])
+      removeLoading(story.id)
+      removeLoading(nextStory.id)
+    }
   }
 
   const handleSelectPoints = (story: Story, points: number | null) => {
-    console.log({ story, points })
-    setLoading({ storyId: story.id })
-    setTimeout(() => setLoading({ storyId: null }), 1000)
+    // console.log({ story, points })
+    // setLoading({ storyId: story.id })
+    // setTimeout(() => setLoading({ storyId: null }), 1000)
   }
 
   return (
@@ -83,7 +115,7 @@ export default function Pipelines (props: Props) {
             key={story.id}
             story={story}
             current
-            loading={loading.storyId === story.id}
+            loading={checkLoading(story.id)}
             onStateChange={handleStateChange}
             onSelectPoints={handleSelectPoints}
           />
@@ -102,7 +134,7 @@ export default function Pipelines (props: Props) {
               <StoryCard
                 key={story.id}
                 story={story}
-                loading={loading.storyId === story.id}
+                loading={checkLoading(story.id)}
                 onStateChange={handleStateChange}
                 onSelectPoints={handleSelectPoints}
               />
@@ -116,7 +148,7 @@ export default function Pipelines (props: Props) {
             key={story.id}
             story={story}
             icebox
-            loading={loading.storyId === story.id}
+            loading={checkLoading(story.id)}
             onStateChange={handleStateChange}
             onSelectPoints={handleSelectPoints}
           />

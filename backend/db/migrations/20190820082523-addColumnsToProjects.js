@@ -7,15 +7,15 @@ module.exports = {
       await queryInterface.addColumn('Projects', 'startIterationsOn', {
         type: Sequelize.ENUM,
         allowNull: false,
-        defaultValue: 'mon',
+        defaultValue: 'MON',
         values: [
-          'mon',
-          'tue',
-          'wed',
-          'thu',
-          'fri',
-          'sat',
-          'sun',
+          'MON',
+          'TUE',
+          'WED',
+          'THU',
+          'FRI',
+          'SAT',
+          'SUN',
         ]
       }, { transaction })
       

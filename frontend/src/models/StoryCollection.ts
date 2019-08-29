@@ -3,7 +3,6 @@ import addDays from 'date-fns/addDays'
 
 import Story from '@/models/Story'
 import StoryState from '@/models/StoryState'
-import { is } from 'bluebird';
 
 export interface IterationStoriesOptionsI {
   currentIteration: {
@@ -52,7 +51,19 @@ export default class StoryCollection {
     return this.stories.reduce((acc, it) => acc + it.points, 0)
   }
 
-  private sortByPrevId (stories: Story[]) {
+  get lastStory (): Story {
+    return this.stories[this.stories.length - 1]
+  }
+
+  findPrevStory (story: Story): Story | null {
+    return this.stories.find(it => it.id === story.prevId) || null
+  }
+
+  findNextStory (story: Story): Story | null {
+    return this.stories.find(it => it.prevId === story.id) || null
+  }
+
+  private sortByPrevId (stories: Story[]): Story[] {
     if (stories.length < 2) { return stories }
 
     function binarySearch (targetId: number, stories: Story[]): Story {
@@ -70,14 +81,14 @@ export default class StoryCollection {
 
     let target = stories.find(it => it.prevId === null)
     const targets = stories.filter(it => it.prevId)
-    let results = []
+    let results: Story[] = []
     while (results.length < stories.length) {
       if (target.prevId === null) {
-        results.push({ ...target }) 
+        results.push(target.clone()) 
       }
       const next = binarySearch(target.id, targets)
-      results.push({ ...next })
-      target = { ...next }
+      results.push(next.clone())
+      target = next.clone()
     }
     return results
   }

@@ -15,13 +15,13 @@ module.exports = (sequelize, DataTypes) => {
     startIterationsOn: {
       type: DataTypes.ENUM,
       values: [
-        'mon',
-        'tue',
-        'wed',
-        'thu',
-        'fri',
-        'sat',
-        'sun',
+        'MON',
+        'TUE',
+        'WED',
+        'THU',
+        'FRI',
+        'SAT',
+        'SUN',
       ],
       allowNull: false,
       validate: {

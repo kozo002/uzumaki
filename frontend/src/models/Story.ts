@@ -26,7 +26,7 @@ export default class Story {
   readonly type: StoryType
   readonly points: number | null
   readonly requester: UserT | null
-  readonly inIcebox: Boolean
+  readonly inIcebox: boolean
   readonly prevId: number | null
   readonly createdAt: Date
   readonly updatedAt: Date
@@ -43,5 +43,28 @@ export default class Story {
     this.prevId = data.prevId
     this.createdAt = new Date(data.createdAt)
     this.updatedAt = new Date(data.updatedAt)
+  }
+
+  clone (): Story {
+    return new Story({
+      id: this.id.toString(),
+      title: this.title,
+      description: this.description,
+      state: this.state,
+      type: this.type,
+      points: this.points,
+      requester: {
+        id: this.requester.id.toString(),
+        name: this.requester.name,
+      },
+      inIcebox: this.inIcebox,
+      prevId: this.prevId,
+      createdAt: this.createdAt.toISOString(),
+      updatedAt: this.updatedAt.toISOString(),
+    })
+  }
+
+  willStart (input: StoryInputI) {
+    return this.state === StoryState.UNSTARTED && input.state === StoryState.STARTED
   }
 }

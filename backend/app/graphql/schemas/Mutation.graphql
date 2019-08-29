@@ -5,5 +5,6 @@ type Mutation {
   updateProject(id: ID!, name: String!, description: String): Project
   createStory(projectId: ID!, input: StoryInput!): Story
   updateStory(projectId: ID!, id: ID!, input: StoryInput!): Story
+  updateStories(projectId: ID!, ids: [ID]!, inputs: [StoryInput]!): [Story]
   deleteStory(projectId: ID!, id: ID!): ID
 }

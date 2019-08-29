@@ -3,6 +3,7 @@ import addDays from 'date-fns/addDays'
 
 import Story from '@/models/Story'
 import StoryState from '@/models/StoryState'
+import { is } from 'bluebird';
 
 export interface IterationStoriesOptionsI {
   currentIteration: {
@@ -16,6 +17,7 @@ export interface IterationStoriesI {
   startDay: Date | null
   endDay: Date | null
   stories: Story[]
+  totalPoints: number
 }
 
 export default class StoryCollection {
@@ -23,15 +25,15 @@ export default class StoryCollection {
   private __iterationStories: IterationStoriesI[]
 
   static extractCurrentIteration (stories: Story[]): StoryCollection {
-    const array = StoryState.toArray()
-    const filtered = stories.filter(it => array.indexOf(it.state) > 1)
+    const filtered = stories.filter(it =>
+      it.state !== StoryState.UNSTARTED && !it.inIcebox
+    )
     return new StoryCollection(filtered)
   }
 
   static extractBacklog (stories: Story[]): StoryCollection {
-    const array = StoryState.toArray()
     const filtered = stories.filter(it => 
-      array.indexOf(it.state) <= 1 && !it.inIcebox
+      it.state === StoryState.UNSTARTED && !it.inIcebox
     )
     return new StoryCollection(filtered)
   }
@@ -44,6 +46,10 @@ export default class StoryCollection {
   constructor (stories: Story[]) {
     this.stories = this.sortByPrevId(stories)
     this.__iterationStories = null
+  }
+
+  get totalPoints (): number {
+    return this.stories.reduce((acc, it) => acc + it.points, 0)
   }
 
   private sortByPrevId (stories: Story[]) {

@@ -18,7 +18,7 @@ function PointButton (props: { points: number, onClick: (points: number) => void
 
   return (
     <button
-      className="btn btn-sm btn-outline-secondary"
+      className="btn btn-sm btn-outline-secondary font-weight-bold"
       onClick={handleClick}
     >
       {props.points}

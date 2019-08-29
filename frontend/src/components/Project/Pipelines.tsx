@@ -26,12 +26,17 @@ type Props = {
   iterationsCount: number,
 }
 
-function IterationHeader (props: { start: Date, end: Date, count: number }): React.ReactElement {
+function IterationHeader (props: { start: Date, end: Date, count: number, total: number }): React.ReactElement {
   return (
-    <p className="font-weight-bold text-secondary">
-      {formatDate(props.start)} - {formatDate(props.end)}
-      &nbsp;&nbsp;
-      ITERATION {props.count}
+    <p className="font-weight-bold text-secondary d-flex justify-content-between">
+      <span>
+        {formatDate(props.start)} - {formatDate(props.end)}
+        &nbsp;&nbsp;
+        ITERATION {props.count}
+      </span>
+      <span>
+        TOTAL {props.total}
+      </span>
     </p>
   )
 }
@@ -52,7 +57,12 @@ export default function Pipelines (props: Props) {
   return (
     <Wrapper>
       <Pipeline width={minPWidth} type={PipelineType.Current}>
-        <IterationHeader start={startDay} end={endDay} count={iterationsCount} />
+        <IterationHeader
+          start={startDay}
+          end={endDay}
+          count={iterationsCount}
+          total={current.totalPoints} 
+        />
         {current.stories.map(story => (
           <StoryCard key={story.id} story={story} current />
         ))}
@@ -64,6 +74,7 @@ export default function Pipelines (props: Props) {
               start={iteration.startDay}
               end={iteration.endDay}
               count={iterationsCount + i + 1}
+              total={iteration.totalPoints} 
             />
             {iteration.stories.map(story => (
               <StoryCard key={story.id} story={story} />

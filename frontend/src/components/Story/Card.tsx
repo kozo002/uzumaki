@@ -5,6 +5,7 @@ import StateButton from '@/components/Story/StateButton'
 import TypeIcon from '@/components/Story/TypeIcon'
 import Points from '@/components/Story/Points'
 import Story from '@/models/Story'
+import StoryType from '@/models/StoryType'
 
 const Wrapper = styled.article.attrs({
   className: 'card card-default',
@@ -62,24 +63,24 @@ export default function Card (props: Props) {
       >
         <Title>{story.title}</Title>
         <div className="d-flex justify-content-between align-items-center">
-          <TypeIcon type={story.type} />
           <div className="d-flex align-items-center"> 
-            <Points points={story.points} onSelectPoints={handleSelectPoints} />
-            {story.points != null && (
-              <>
-                &nbsp;&nbsp;
-                <StateButton
-                  state={story.state}
-                  onStart={() => console.log('start')}
-                  onFinish={() => console.log('finish')}
-                  onDeliver={() => console.log('deliver')}
-                  onAccept={() => console.log('accept')}
-                  onReject={() => console.log('reject')}
-                  onRestart={() => console.log('restart')}
-                />
-              </>
+            <TypeIcon type={story.type} />
+            &nbsp;&nbsp;
+            {story.type === StoryType.FEATURE && (
+              <Points points={story.points} onSelectPoints={handleSelectPoints} />
             )}
           </div>
+          {(story.points != null || story.type !== StoryType.FEATURE) && (
+            <StateButton
+              state={story.state}
+              onStart={() => console.log('start')}
+              onFinish={() => console.log('finish')}
+              onDeliver={() => console.log('deliver')}
+              onAccept={() => console.log('accept')}
+              onReject={() => console.log('reject')}
+              onRestart={() => console.log('restart')}
+            />
+          )}
         </div>
       </Body>
     </Wrapper>

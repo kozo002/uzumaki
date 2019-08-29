@@ -17,10 +17,10 @@ export default function StateButton (props: Props) {
     case StoryState.UNSTARTED:
       return (
         <button
-          className="btn btn-sm btn-secondary"
+          className="btn btn-sm btn-light"
           onClick={props.onStart}
         >
-          Start
+          START
         </button>
       )
     case StoryState.STARTED:
@@ -29,7 +29,7 @@ export default function StateButton (props: Props) {
           className="btn btn-sm btn-primary"
           onClick={props.onFinish}
         >
-          Finish
+          FINISH
         </button>
       )
     case StoryState.FINISHED:
@@ -38,7 +38,7 @@ export default function StateButton (props: Props) {
           className="btn btn-sm btn-warning text-white"
           onClick={props.onDeliver}
         >
-          Deliver
+          DELIVER
         </button>
       )
     case StoryState.DELIVERED:
@@ -48,13 +48,13 @@ export default function StateButton (props: Props) {
             className="btn btn-sm btn-success"
             onClick={props.onAccept}
           >
-            Accept
+            ACCEPT
           </button>
           <button
             className="btn btn-sm btn-danger"
             onClick={props.onReject}
           >
-            Reject
+            REJECT
           </button>
         </div>
       )
@@ -64,7 +64,7 @@ export default function StateButton (props: Props) {
           className="btn btn-sm btn-info"
           onClick={props.onRestart}
         >
-          Restart
+          RESTART
         </button>
       )
     case StoryState.ACCEPTED:

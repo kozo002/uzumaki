@@ -1,10 +1,10 @@
 enum StoryState {
-  UNSTARTED = 'unstarted',
-  STARTED = 'started',
-  FINISHED = 'finished',
-  DELIVERED = 'delivered',
-  REJECTED = 'rejected',
-  ACCEPTED = 'accepted',
+  UNSTARTED = 'UNSTARTED',
+  STARTED = 'STARTED',
+  FINISHED = 'FINISHED',
+  DELIVERED = 'DELIVERED',
+  REJECTED = 'REJECTED',
+  ACCEPTED = 'ACCEPTED',
 }
 
 namespace StoryState {

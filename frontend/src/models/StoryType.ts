@@ -1,8 +1,8 @@
 enum StoryType {
-  FEATURE = 'feature',
-  BUG = 'bug',
-  CHORE = 'chore',
-  RELEASE = 'release'
+  FEATURE = 'FEATURE',
+  BUG = 'BUG',
+  CHORE = 'CHORE',
+  RELEASE = 'RELEASE'
 }
 
 const StoryTypeIcons = {

@@ -4,6 +4,7 @@
     "paths": {
       "@/*": ["frontend/src/*"]
     },
-    "jsx": "react"
+    "jsx": "react",
+    "target": "es5"
   }
 }

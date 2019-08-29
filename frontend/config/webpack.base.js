@@ -23,7 +23,7 @@ module.exports = {
         // loader: 'awesome-typescript-loader',
         exclude: /node_modules/,
         options: {
-          configFile: 'frontend/config/tsconfig.json',
+          configFile: path.resolve(__dirname, './tsconfig.json'),
         },
       },
       {

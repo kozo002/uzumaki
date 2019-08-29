@@ -3,22 +3,18 @@ import * as React from 'react'
 import StoryState from '@/models/StoryState'
 
 interface Props {
-  state: StoryState,
-  onStart: () => void,
-  onFinish: () => void,
-  onDeliver: () => void,
-  onAccept: () => void,
-  onReject: () => void,
-  onRestart: () => void,
+  state: StoryState
+  onChange: (state: StoryState) => void
 }
 
 export default function StateButton (props: Props) {
-  switch (props.state) {
+  const { state, onChange } = props
+  switch (state) {
     case StoryState.UNSTARTED:
       return (
         <button
           className="btn btn-sm btn-light"
-          onClick={props.onStart}
+          onClick={() => onChange(StoryState.STARTED)}
         >
           START
         </button>
@@ -27,7 +23,7 @@ export default function StateButton (props: Props) {
       return (
         <button
           className="btn btn-sm btn-primary"
-          onClick={props.onFinish}
+          onClick={() => onChange(StoryState.FINISHED)}
         >
           FINISH
         </button>
@@ -36,7 +32,7 @@ export default function StateButton (props: Props) {
       return (
         <button
           className="btn btn-sm btn-warning text-white"
-          onClick={props.onDeliver}
+          onClick={() => onChange(StoryState.DELIVERED)}
         >
           DELIVER
         </button>
@@ -46,13 +42,13 @@ export default function StateButton (props: Props) {
         <div className="btn-group">
           <button
             className="btn btn-sm btn-success"
-            onClick={props.onAccept}
+            onClick={() => onChange(StoryState.ACCEPTED)}
           >
             ACCEPT
           </button>
           <button
             className="btn btn-sm btn-danger"
-            onClick={props.onReject}
+            onClick={() => onChange(StoryState.REJECTED)}
           >
             REJECT
           </button>
@@ -62,7 +58,7 @@ export default function StateButton (props: Props) {
       return (
         <button
           className="btn btn-sm btn-info"
-          onClick={props.onRestart}
+          onClick={() => onChange(StoryState.STARTED)}
         >
           RESTART
         </button>

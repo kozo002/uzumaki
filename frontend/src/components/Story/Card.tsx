@@ -1,15 +1,18 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import FadeLoader from 'react-spinners/FadeLoader'
 
 import StateButton from '@/components/Story/StateButton'
 import TypeIcon from '@/components/Story/TypeIcon'
 import Points from '@/components/Story/Points'
 import Story from '@/models/Story'
 import StoryType from '@/models/StoryType'
+import StoryState from '@/models/StoryState'
 
 const Wrapper = styled.article.attrs({
   className: 'card card-default',
 })`
+  position: relative;
   margin: 0 0 16px 0;
   border: 0;
   border-radius: 8px;
@@ -43,17 +46,31 @@ const Title = styled.h1.attrs({
   line-height: 1.5
 `
 
+const LoadingIndicator = styled.div.attrs({
+  className: 'd-flex justify-content-center align-items-center',
+})`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255,255,255,.5);
+`
+
 interface Props {
   story: Story
   icebox?: boolean
   current?: boolean
+  loading: boolean
+  onStateChange: (story: Story, state: StoryState) => void
+  onSelectPoints: (story: Story, points: number | null) => void
 }
 
 export default function Card (props: Props) {  
   const { story } = props
-  const handleSelectPoints = (points: number) => {
-    console.log({ points })
-  }
+
+  const isPointsNeeded = story.type === StoryType.FEATURE
+  const isStateButtonNeeded = story.points != null || story.type !== StoryType.FEATURE
 
   return (
     <Wrapper>
@@ -66,23 +83,32 @@ export default function Card (props: Props) {
           <div className="d-flex align-items-center"> 
             <TypeIcon type={story.type} />
             &nbsp;&nbsp;
-            {story.type === StoryType.FEATURE && (
-              <Points points={story.points} onSelectPoints={handleSelectPoints} />
+            {isPointsNeeded && (
+              <Points
+                points={story.points}
+                onSelectPoints={points => props.onSelectPoints(story, points)}
+              />
             )}
           </div>
-          {(story.points != null || story.type !== StoryType.FEATURE) && (
+          {isStateButtonNeeded && (
             <StateButton
               state={story.state}
-              onStart={() => console.log('start')}
-              onFinish={() => console.log('finish')}
-              onDeliver={() => console.log('deliver')}
-              onAccept={() => console.log('accept')}
-              onReject={() => console.log('reject')}
-              onRestart={() => console.log('restart')}
+              onChange={(state: StoryState) => props.onStateChange(story, state)}
             />
           )}
         </div>
       </Body>
+      {props.loading && (
+        <LoadingIndicator>
+          <FadeLoader
+            height={10}
+            width={5}
+            radius={2}
+            margin="2px"
+            color="#989B9A"
+          />
+        </LoadingIndicator>
+      )}
     </Wrapper>
   )
 }

@@ -6,6 +6,7 @@ import StoryCard from '@/components/Story/Card'
 import { formatDate } from '@/helpers/Date'
 import Project from '@/models/Project'
 import Story from '@/models/Story'
+import StoryState from '@/models/StoryState'
 import StoryCollection, { IterationStoriesOptionsI } from '@/models/StoryCollection'
 
 const Wrapper = styled.div`
@@ -54,6 +55,20 @@ export default function Pipelines (props: Props) {
     velocity: project.velocity,
   } as IterationStoriesOptionsI)
 
+  const [loading, setLoading] = React.useState<{ storyId: number | null }>({ storyId: null })
+
+  const handleStateChange = (story: Story, state: StoryState) => {
+    console.log({ story, state })
+    setLoading({ storyId: story.id })
+    setTimeout(() => setLoading({ storyId: null }), 1000)
+  }
+
+  const handleSelectPoints = (story: Story, points: number | null) => {
+    console.log({ story, points })
+    setLoading({ storyId: story.id })
+    setTimeout(() => setLoading({ storyId: null }), 1000)
+  }
+
   return (
     <Wrapper>
       <Pipeline width={minPWidth} type={PipelineType.Current}>
@@ -64,7 +79,14 @@ export default function Pipelines (props: Props) {
           total={current.totalPoints} 
         />
         {current.stories.map(story => (
-          <StoryCard key={story.id} story={story} current />
+          <StoryCard
+            key={story.id}
+            story={story}
+            current
+            loading={loading.storyId === story.id}
+            onStateChange={handleStateChange}
+            onSelectPoints={handleSelectPoints}
+          />
         ))}
       </Pipeline>
       <Pipeline width={minPWidth} type={PipelineType.Backlog}>
@@ -77,14 +99,27 @@ export default function Pipelines (props: Props) {
               total={iteration.totalPoints} 
             />
             {iteration.stories.map(story => (
-              <StoryCard key={story.id} story={story} />
+              <StoryCard
+                key={story.id}
+                story={story}
+                loading={loading.storyId === story.id}
+                onStateChange={handleStateChange}
+                onSelectPoints={handleSelectPoints}
+              />
             ))}
           </React.Fragment>
         ))}
       </Pipeline>
       <Pipeline width={minPWidth} type={PipelineType.Icebox}>
         {icebox.stories.map(story => (
-          <StoryCard key={story.id} story={story} icebox />
+          <StoryCard
+            key={story.id}
+            story={story}
+            icebox
+            loading={loading.storyId === story.id}
+            onStateChange={handleStateChange}
+            onSelectPoints={handleSelectPoints}
+          />
         ))}
       </Pipeline>
     </Wrapper>

@@ -64,7 +64,11 @@ export default class Story {
     })
   }
 
-  willStart (input: StoryInputI) {
+  willStart (input: StoryInputI): boolean {
     return this.state === StoryState.UNSTARTED && input.state === StoryState.STARTED
+  }
+
+  willAccept (input: StoryInputI): boolean {
+    return this.state === StoryState.DELIVERED && input.state === StoryState.ACCEPTED
   }
 }

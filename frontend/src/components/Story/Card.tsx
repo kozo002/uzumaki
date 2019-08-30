@@ -27,8 +27,13 @@ const Body = styled.div.attrs({
 })<{
   icebox?: boolean,
   current?: boolean,
+  done?: boolean,
 }>`
   border-radius: 8px;
+
+  ${props => props.done && `
+    background-color: #eefce2;
+  `}
 
   ${props => props.current && `
     background-color: #ffe8d4;
@@ -59,6 +64,7 @@ const LoadingIndicator = styled.div.attrs({
 
 interface Props {
   story: Story
+  done?: boolean
   icebox?: boolean
   current?: boolean
   loading: boolean
@@ -77,6 +83,7 @@ export default function Card (props: Props) {
       <Body
         icebox={props.icebox}
         current={props.current}
+        done={props.done}
       >
         <Title>{story.title}</Title>
         <div className="d-flex justify-content-between align-items-center">

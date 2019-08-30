@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useQuery, useMutation } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/react-hooks'
 import { useDispatch } from 'react-redux'
 import sortBy from 'lodash/sortBy'
 
@@ -9,10 +9,9 @@ import AlertError from '@/components/AlertError'
 import Project from '@/models/Project'
 import Story from '@/models/Story'
 import { setTitle } from '@/store/modules/title'
-import { calcIteration } from '@/helpers/Iteration'
+import StoryCRUD, { InjectionProps as StoriesUpdatingProps } from '@/containers/StoryCRUD'
+
 const projectStoriesQuery = require('@/graphql/Query/ProjectStories.graphql')
-const updateStoriesMutation = require('@/graphql/Mutation/updateStories.graphql')
-console.log(updateStoriesMutation)
 
 type Props = {
   match: RouteMatch,
@@ -25,19 +24,6 @@ export default function Show (props: Props) {
   const { loading, error, data } = useQuery(projectStoriesQuery, {
     variables: { id: projectId }
   })
-  const [updateStories] = useMutation<UpdateStoryPayloadI, StoriesParametersI>(updateStoriesMutation)
-
-  async function handleStoriesUpdate (stories: Story[], inputs: StoryInputI[]) {
-    try {
-      await updateStories({ variables: {
-        projectId,
-        ids: stories.map(it => it.id),
-        inputs
-      } })
-    } catch (err) {
-      console.error(err)
-    }
-  }
 
   React.useEffect(() => {
     if (data && data.project) {
@@ -46,9 +32,7 @@ export default function Show (props: Props) {
     }
   })
 
-  if (loading) {
-    return <>'loading...'</>
-  }
+  if (loading) { return <>'loading...'</> }
 
   if (error) {
     return (
@@ -61,16 +45,24 @@ export default function Show (props: Props) {
   const project: Project = new Project(data.project)
   const stories: Story[] = sortBy(data.project.stories, it => it.prevId)
     .map((it: StoryPayloadT) => new Story(it))
-  const { startDay, endDay, iterationsCount } = calcIteration(project)
 
   return (
-    <Pipelines
+    <StoryCRUD
       project={project}
       stories={stories}
-      startDay={startDay}
-      endDay={endDay}
-      iterationsCount={iterationsCount}
-      onStoriesUpdate={handleStoriesUpdate}
-    />
+    >
+      {(props: StoriesUpdatingProps) => (
+        <Pipelines
+          project={project}
+          done={props.done}
+          current={props.current}
+          icebox={props.icebox}
+          backlog={props.backlog}
+          currentIteration={props.currentIteration}
+          onStoryUpdate={props.onStoryUpdate}
+          checkLoading={props.checkLoading}
+        />
+      )}
+    </StoryCRUD>
   )
 }

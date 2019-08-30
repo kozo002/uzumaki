@@ -69,6 +69,12 @@ declare global {
     updateProject: ProjectPayloadT
   }
 
+  interface IterationDataI {
+    startDay: Date
+    endDay: Date
+    count: number
+  }
+
   type StoryT = {
     id: ID,
     title: string,

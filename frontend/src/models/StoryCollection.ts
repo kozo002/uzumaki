@@ -9,7 +9,7 @@ export interface IterationStoriesOptionsI {
     startDay: Date
     endDay: Date
   }
-  iterationsLength: number
+  iterationLength: number
   velocity: number,
 }
 export interface IterationStoriesI {
@@ -19,13 +19,24 @@ export interface IterationStoriesI {
   totalPoints: number
 }
 
+interface OptionsI {
+  sort?: boolean
+}
+
 export default class StoryCollection {
   stories: Story[]
   private __iterationStories: IterationStoriesI[]
 
+  static extractDone (stories: Story[]): StoryCollection {
+    const filtered = stories.filter(it => it.state === StoryState.ACCEPTED)
+    return new StoryCollection(filtered, { sort: false })
+  }
+
   static extractCurrentIteration (stories: Story[]): StoryCollection {
     const filtered = stories.filter(it =>
-      it.state !== StoryState.UNSTARTED && !it.inIcebox
+      it.state !== StoryState.UNSTARTED
+      && it.state !== StoryState.ACCEPTED
+      && !it.inIcebox
     )
     return new StoryCollection(filtered)
   }
@@ -42,8 +53,10 @@ export default class StoryCollection {
     return new StoryCollection(filtered)
   }
 
-  constructor (stories: Story[]) {
-    this.stories = this.sortByPrevId(stories)
+  constructor (stories: Story[], options: OptionsI = { sort: true }) {
+    this.stories = options.sort
+      ? this.sortByPrevId(stories)
+      : stories
     this.__iterationStories = null
   }
 
@@ -95,7 +108,7 @@ export default class StoryCollection {
 
   iterationStories (options: IterationStoriesOptionsI): IterationStoriesI[] {
     if (this.__iterationStories !== null) { return this.__iterationStories }
-    const { currentIteration, iterationsLength, velocity } = options
+    const { currentIteration, iterationLength, velocity } = options
     const firstStartDay = addDays(currentIteration.endDay, 1)
 
     const splitStories = this.stories.reduce((acc, story) => {
@@ -115,8 +128,8 @@ export default class StoryCollection {
     }, [] as Array<Story[]>)
 
     this.__iterationStories = splitStories.map((stories, i) => {
-      const startDay = addDays(firstStartDay, iterationsLength * 7 * i)
-      const endDay = addDays(startDay, iterationsLength * 7 - 1)
+      const startDay = addDays(firstStartDay, iterationLength * 7 * i)
+      const endDay = addDays(startDay, iterationLength * 7 - 1)
       return {
         startDay,
         endDay,

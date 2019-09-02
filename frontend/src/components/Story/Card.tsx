@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import FadeLoader from 'react-spinners/FadeLoader'
+import { Link } from 'react-router-dom'
 
 import StateButton from '@/components/Story/StateButton'
 import TypeIcon from '@/components/Story/TypeIcon'
@@ -8,6 +9,7 @@ import Points from '@/components/Story/Points'
 import Story from '@/models/Story'
 import StoryType from '@/models/StoryType'
 import StoryState from '@/models/StoryState'
+import * as r from '@/helpers/Route'
 
 const Wrapper = styled.article.attrs({
   className: 'card card-default',
@@ -63,6 +65,8 @@ const LoadingIndicator = styled.div.attrs({
 `
 
 interface Props {
+  organizationId: number
+  projectId: number
   story: Story
   done?: boolean
   icebox?: boolean
@@ -73,7 +77,7 @@ interface Props {
 }
 
 export default function Card (props: Props) {  
-  const { story } = props
+  const { story, organizationId, projectId } = props
 
   const isPointsNeeded = story.type === StoryType.FEATURE
   const isStateButtonNeeded = story.points != null || story.type !== StoryType.FEATURE
@@ -85,7 +89,9 @@ export default function Card (props: Props) {
         current={props.current}
         done={props.done}
       >
-        <Title>{story.title}</Title>
+        <Title>
+          <Link to={r.showStoryPath(organizationId, projectId, story.id)}>{story.title}</Link>
+        </Title>
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center"> 
             <TypeIcon type={story.type} />

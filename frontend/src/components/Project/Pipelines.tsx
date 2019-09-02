@@ -20,6 +20,7 @@ const Wrapper = styled.div`
 const minPWidth = 375
 
 interface Props {
+  organizationId: number
   project: Project
   done: StoryCollection
   current: StoryCollection
@@ -31,6 +32,7 @@ interface Props {
 }
 export default function Pipelines (props: Props) {
   const {
+    organizationId,
     project,
     currentIteration,
     onStoryUpdate,
@@ -63,6 +65,8 @@ export default function Pipelines (props: Props) {
         />
         {done.stories.map(story => (
           <StoryCard
+            organizationId={organizationId}
+            projectId={project.id}
             key={story.id}
             story={story}
             done
@@ -73,6 +77,8 @@ export default function Pipelines (props: Props) {
         ))}
         {current.stories.map(story => (
           <StoryCard
+            organizationId={organizationId}
+            projectId={project.id}
             key={story.id}
             story={story}
             current
@@ -92,6 +98,8 @@ export default function Pipelines (props: Props) {
             />
             {iteration.stories.map(story => (
               <StoryCard
+                organizationId={organizationId}
+                projectId={project.id}
                 key={story.id}
                 story={story}
                 loading={checkLoading(story.id)}
@@ -105,6 +113,8 @@ export default function Pipelines (props: Props) {
       <Pipeline width={minPWidth} type={PipelineType.Icebox}>
         {icebox.stories.map(story => (
           <StoryCard
+            organizationId={organizationId}
+            projectId={project.id}
             key={story.id}
             story={story}
             icebox

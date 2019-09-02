@@ -25,3 +25,7 @@ export function newProjectPath(organizationId: number) {
 export function editProjectPath(organizationId: number, projectId: number) {
   return `${showProjectPath(organizationId, projectId)}/edit`
 }
+
+export function showStoryPath(organizationId: number, projectId: number, storyId: number) {
+  return `${showProjectPath(organizationId, projectId)}/stories/${storyId}`
+}

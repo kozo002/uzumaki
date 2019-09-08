@@ -1,8 +1,11 @@
 import * as React from 'react'
-import { useQuery } from '@apollo/react-hooks'
-import Markdown from 'react-markdown'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 
-const storyQuery = require('@/graphql/Query/Story.graphql')
+import Detail from '@/components/Story/Detail'
+import Story from '@/models/Story'
+
+const storyQuery = require('@/graphql/Query/Story.graphql') 
+const updateStoriesMutation = require('@/graphql/Mutation/updateStories.graphql')
 
 interface Props {
   match: RouteMatch
@@ -13,6 +16,15 @@ export default function Show (props: Props) {
   const { loading, error, data } = useQuery(storyQuery, {
     variables: { projectId, id: storyId }
   })
+  const [updateStories] = useMutation<UpdateStoryPayloadI, StoriesParametersI>(updateStoriesMutation)
+  const handleUpdate = (story: Story, input: StoryInputI) => {
+    console.log('update', story, input)
+    return updateStories({ variables: {
+      projectId: parseInt(projectId),
+      ids: [story.id],
+      inputs: [input]
+    } })
+  }
 
   const { story } = data
 
@@ -25,10 +37,10 @@ export default function Show (props: Props) {
         <div>{error}</div>
       )}
       {story && (
-        <div>
-          <h5 className="modal-title">{story.title}</h5>
-          <Markdown source={story.description} />
-        </div>
+        <Detail
+          story={story}
+          onUpdate={handleUpdate}
+        />
       )}
     </div>
   )

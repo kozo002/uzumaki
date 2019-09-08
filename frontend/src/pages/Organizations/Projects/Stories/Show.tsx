@@ -18,7 +18,6 @@ export default function Show (props: Props) {
   })
   const [updateStories] = useMutation<UpdateStoryPayloadI, StoriesParametersI>(updateStoriesMutation)
   const handleUpdate = (story: Story, input: StoryInputI) => {
-    console.log('update', story, input)
     return updateStories({ variables: {
       projectId: parseInt(projectId),
       ids: [story.id],

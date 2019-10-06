@@ -17,6 +17,8 @@ services:
     environment:
       POSTGRES_USER: uzumaki
       POSTGRES_PASSWORD: password
+    volumes:
+      - $PWD/docker-data-test/db:/var/lib/postgresql/data
   app:
     build:
       context: .

@@ -12,9 +12,15 @@ module.exports = async (parent, args, context, info) => {
   if (!story) {
     throw new ForbiddenError('The story does not belong to the project')
   }
+  const transaction = await db.sequelize.transaction()
   try {
-    await story.update(input)
+    if (story.willStart(input)) {
+      story.updatePrevIdOfNextOne(transaction)
+    }
+    await story.update(input, { transaction })
+    await transaction.commit()
   } catch (err) {
+    await transaction.rollback()
     if (err instanceof ValidationError) {
       throw new UserInputError(err.message)
     }

@@ -1,4 +1,5 @@
 'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const Story = sequelize.define('Story', {
     title: {
@@ -59,6 +60,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notNull: true,
       },
+      defaultValue: false,
     },
     projectId: {
       type: DataTypes.INTEGER,
@@ -119,5 +121,36 @@ module.exports = (sequelize, DataTypes) => {
     return records[0] || null
   }
 
-  return Story;
-};
+  Story.prototype.findPrevOne = async function () {
+    const { prevId } = this
+    if (prevId === null) { return null }
+    return Story.findOne({ where: { id: prevId } })
+  }
+
+  Story.prototype.findNextOne = async function () {
+    const { id } = this
+    return Story.findOne({ where: { prevId: id } })
+  }
+
+  Story.prototype.willStart = function (userInput) {
+    return this.state === 'UNSTARTED' && userInput.state === 'STARTED'
+  }
+
+  /**
+   * Use for moving to another pipeline.
+   * If the story has prevId, this finds the previous record and the next record and then updates the prevId of the next record with the previous record id.
+   * But the story doesn't have the prevId, updates the prevId of the next record to null
+   */
+  Story.prototype.updatePrevIdOfNextOne = async function (transaction) {
+    const options = transaction ? { transaction } : {}
+    const prevStory = await this.findPrevOne()
+    const nextStory = await this.findNextOne()
+    if (prevStory && nextStory) {
+      await nextStory.update({ prevId: prevStory.id }, options)
+    } else if (prevStory === null && nextStory) {
+      await nextStory.update({ prevId: null }, options)
+    }
+  }
+
+  return Story
+}

@@ -62,5 +62,6 @@ typings/
 
 /frontend/dist
 /docker-data
+/docker-data-test
 .env.dev
 /tmp

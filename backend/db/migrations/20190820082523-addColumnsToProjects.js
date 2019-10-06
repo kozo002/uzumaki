@@ -4,6 +4,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
+      await queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_Projects_startIterationsOn"', { transaction })
       await queryInterface.addColumn('Projects', 'startIterationsOn', {
         type: Sequelize.ENUM,
         allowNull: false,

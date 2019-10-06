@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         notNull: true,
         notEmpty: true,
       },
+      defaultValue: 'MON',
     },
     iterationLength: {
       type: DataTypes.INTEGER,
@@ -36,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
         notNull: true,
         notEmpty: true,
       },
+      defaultValue: 1,
     },
     velocity: {
       type: DataTypes.INTEGER,
@@ -43,7 +45,8 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notNull: true,
         notEmpty: true,
-      }
+      },
+      defaultValue: 10,
     }
   }, {});
 

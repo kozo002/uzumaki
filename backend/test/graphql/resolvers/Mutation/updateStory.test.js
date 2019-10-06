@@ -16,7 +16,7 @@ describe('updateStory', () => {
           const project = await organization.createProject({ name: 'example' })
           const story = await project.createStory({
             title: 'example',
-            state: 'unstarted',
+            state: 'UNSTARTED',
             requesterId: user.id,
           })
           const dummyArgs = {
@@ -24,7 +24,7 @@ describe('updateStory', () => {
             id: story.id,
             input: {
               title: 'updated title',
-              state: 'started',
+              state: 'UNSTARTED',
             }
           }
           const dummyContext = { user, db }
@@ -48,7 +48,7 @@ describe('updateStory', () => {
           const project = await organization.createProject({ name: 'example' })
           const story = await project.createStory({
             title: 'example',
-            state: 'unstarted',
+            state: 'UNSTARTED',
             requesterId: user.id,
           })
           const dummyArgs = {
@@ -90,7 +90,7 @@ describe('updateStory', () => {
         const project2 = await organization2.createProject({ name: 'example' })
         const story2 = await project2.createStory({
           title: 'example',
-          state: 'unstarted',
+          state: 'UNSTARTED',
           requesterId: user.id,
         })
         const dummyArgs = {
@@ -98,7 +98,7 @@ describe('updateStory', () => {
           id: story2.id,
           input: {
             title: '',
-            state: 'started',
+            state: 'STARTED',
           }
         }
         const dummyContext = { user, db }
@@ -130,7 +130,7 @@ describe('updateStory', () => {
       const project2 = await organization2.createProject({ name: 'example' })
       const story2 = await project2.createStory({
         title: 'example',
-        state: 'unstarted',
+        state: 'UNSTARTED',
         requesterId: user.id,
       })
       const dummyArgs = {
@@ -138,7 +138,7 @@ describe('updateStory', () => {
         id: story2.id,
         input: {
           title: '',
-          state: 'started',
+          state: 'STARTED',
         }
       }
       const dummyContext = { user, db }

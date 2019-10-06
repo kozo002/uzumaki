@@ -16,7 +16,7 @@ describe('deleteStory', () => {
         const project = await organization.createProject({ name: 'example' })
         const story = await project.createStory({
           title: 'example',
-          state: 'unstarted',
+          state: 'UNSTARTED',
           requesterId: user.id,
         })
         const dummyArgs = {
@@ -49,7 +49,7 @@ describe('deleteStory', () => {
         const project2 = await organization2.createProject({ name: 'example' })
         const story = await project.createStory({
           title: 'example',
-          state: 'unstarted',
+          state: 'UNSTARTED',
           requesterId: user.id,
         })
         const dummyArgs = {
@@ -85,7 +85,7 @@ describe('deleteStory', () => {
       const project2 = await organization2.createProject({ name: 'example' })
       const story2 = await project2.createStory({
         title: 'example',
-        state: 'unstarted',
+        state: 'UNSTARTED',
         requesterId: user.id,
       })
       const dummyArgs = {

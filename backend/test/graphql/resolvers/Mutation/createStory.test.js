@@ -18,7 +18,7 @@ describe('createStory', () => {
           input: {
             title: 'example story',
             description: 'example description',
-            state: 'unstarted',
+            state: 'UNSTARTED',
             points: 1,
             requesterId: user.id,
           }
@@ -51,7 +51,7 @@ describe('createStory', () => {
           input: {
             title: '',
             description: 'example description',
-            state: 'unstarted',
+            state: 'UNSTARTED',
             points: 1,
             requesterId: user.id,
           }
@@ -88,7 +88,7 @@ describe('createStory', () => {
         input: {
           title: '',
           description: 'example description',
-          state: 'unstarted',
+          state: 'UNSTARTED',
           points: 1,
           requesterId: user.id,
         }

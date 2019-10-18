@@ -24,6 +24,7 @@ services:
       context: .
     ports:
       - 8101:8101
+      - 9101:9101
     depends_on:
       - db
     command: ./bin/wait_for_it.sh db:5432 -- npm run backend:start:dev

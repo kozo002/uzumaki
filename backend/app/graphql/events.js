@@ -1,0 +1,1 @@
+module.exports.STORY_ADDED = 'STORY_ADDED'

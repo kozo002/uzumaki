@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery, useSubscription } from '@apollo/react-hooks'
 import { useDispatch } from 'react-redux'
 
 import OrganizationList from '@/components/Organization/List'

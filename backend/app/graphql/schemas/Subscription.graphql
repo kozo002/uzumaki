@@ -1,0 +1,4 @@
+type Subscription {
+  storyAdded: Story
+  storiesUpdated: [Story]
+}

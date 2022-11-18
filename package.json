@@ -58,7 +58,7 @@
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
     "graphql-tools": "^4.0.6",
-    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "^5.5.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "passport": "^0.4.0",
@@ -85,7 +85,7 @@
     "ts-node-dev": "^1.0.0-pre.42",
     "typescript": "^3.5.3",
     "webpack": "^4.36.0",
-    "webpack-cli": "^3.3.6",
+    "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.7.2",
     "yup": "^0.27.0"
   },
